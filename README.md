@@ -15,17 +15,19 @@
 <hr>
 
 ## 👥 Integrantes
-[Bernardo Santos Silva]
-[Daiane da Silva Santos]([@daianesnts](https://github.com/daianesnts/))
-[Luiz Guilherme Andrade Ferreira]
-[Paulo Ítalo Santos Costa]
-[Pedro Henrique Santana Mesquita]
 
-**Professor Orientador:** [ANDRE LUIS MENEZES SILVA]
+* Bernardo Santos Silva
+* [Daiane da Silva Santos](https://github.com/daianesnts)
+* Luiz Guilherme Andrade Ferreira
+* Paulo Ítalo Santos Costa
+* Pedro Henrique Santana Mesquita
+
+**Professor Orientador:** André Luiz Menezes Silva
 
 <hr>
 
 ## 📋 Passos a seguir
 
 Abaixo está o cronograma de atividades e o status atual do desenvolvimento:
-Atividade 1: Elaboração da Documentação Léxica.
+
+1. **Atividade 1:** Elaboração da Documentação Léxica.
