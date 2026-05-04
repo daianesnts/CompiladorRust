@@ -19,9 +19,9 @@
 
 * Bernardo Santos Silva
 * [Daiane da Silva Santos](https://github.com/daianesnts)
-* Luiz Guilherme Andrade Ferreira
-* Paulo Ítalo Santos Costa
-* Pedro Henrique Santana Mesquita
+* [Luiz Guilherme Andrade Ferreira](https://github.com/ziulGui-0)
+* [Paulo Ítalo Santos Costa](https://github.com/Pauloisc)
+* [Pedro Henrique Santana Mesquita](https://github.com/pedrohsmesquita)
 
 **Professor Orientador:** André Luiz Menezes Silva
 
