@@ -11,3 +11,16 @@ Expressões regulares
   Exemplo: [a-zA-Z_][a-zA-Z0-9_]*
 Exemplos válidos: x, nome, _valor, calcular_media, Pessoa, x1
 Exemplos inválidos: 1x, meu-nome, @var, let.
+
+Comentários 
+  Comentários são trechos do código-fonte ignorados pelo compilador. Eles existem para documentar e explicar o código para os programadores. O analisador léxico deve reconhecê-los e descartá-los, sem gerar tokens que cheguem ao analisador sintático.
+Tipos de comentarios comuns 
+  -Linha: //texto até o fim da linha
+  -Blocos: /*Textos que podem ser multilinhas*/
+tipos de comentarios de documentação
+  -Doc de item (linha) ///texto
+  -Doc de item(Bloco) /** texto*/
+  -Doc de modulo(linha) //!texto
+  -Doc de modulo(Bloco) /*!texto*/
+Comportamento
+  Ao reconhecer a estrutura de um comentário, o compilador o ignora por completo, eliminando assim a criação de tokens a partir dele.
