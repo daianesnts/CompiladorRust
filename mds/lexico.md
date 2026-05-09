@@ -1,0 +1,134 @@
+# 🪙 Linguagem Rust - Elementos Léxicos
+
+#### 1. Identificadores
+
+Os identificadores são nomes criados pelos programadores para referenciar elementos do programa, tais como variaveis, funções, enums, structs, módulos e constantes. Para isso, é importante que o compilador reconheça e consiga destinguir das palavras reservadas da linguagem.
+
+**Regras dos Identificadores:**
+- Deve começar com letras[a-z, A-Z] ou underscore(_)
+- Os caractes podem ser seguidos de digitos e underscore
+- Não podem ser iguais as palavras reservadas
+- São case-sensitive, a mesma palavra com letras maiuscula e minuscula diferentes, são identificadores diferentes
+- underscore(_) solitário é valido, significa valor ignorado.
+
+**Expressões regulares:**
+
+Exemplo: `[a-zA-Z_][a-zA-Z0-9_]*`
+
+Exemplos válidos: `x`, `nome`, `_valor`, `calcular_media`, `Pessoa`, `x1`
+
+Exemplos inválidos: `1x`, `meu-nome`, `@var`, `let`
+
+---
+
+#### 2. Comentários
+
+Comentários são trechos do código-fonte ignorados pelo compilador. Eles existem para documentar e explicar o código para os programadores. O analisador léxico deve reconhecê-los e descartá-los, sem gerar tokens que cheguem ao analisador sintático.
+
+**Tipos de comentários comuns:**
+- Linha: `//texto até o fim da linha`
+- Blocos: `/*Textos que podem ser multilinhas*/`
+
+**Tipos de comentários de documentação:**
+- Doc de item (linha): `///texto`
+- Doc de item (Bloco): `/** texto*/`
+- Doc de modulo (linha): `//!texto`
+- Doc de modulo (Bloco): `/*!texto*/`
+
+**Comportamento:**
+
+Ao reconhecer a estrutura de um comentário, o compilador o ignora por completo, eliminando assim a criação de tokens a partir dele.
+
+---
+
+#### 3. Delimitadores
+
+Os delimitadores são símbolos utilizados para estruturar e organizar o código-fonte da linguagem, separando expressões, parâmetros e blocos de comandos. O analisador léxico deve reconhecê-los e gerar os tokens correspondentes.
+
+**Tipos de delimitadores:**
+
+| Símbolo | Descrição |
+|:-------:|-----------|
+| `{ }` | Delimitação de blocos |
+| `( )` | Agrupamento de expressões e parâmetros |
+| `[ ]` | Vetores e índices |
+| `;` | Finalização de instruções |
+| `,` | Separação de parâmetros |
+| `:` | Associação de identificador e tipo |
+| `::` | Acesso a módulos e namespaces |
+
+---
+
+#### 4. Operadores
+
+Os operadores são símbolos responsáveis por realizar operações aritméticas, lógicas, relacionais e de atribuição entre valores.
+
+**Tipos de operadores aritméticos:**
+
+| Operador | Operação |
+|:--------:|----------|
+| `+` | Soma |
+| `-` | Subtração |
+| `*` | Multiplicação |
+| `/` | Divisão |
+| `%` | Resto da divisão |
+
+**Tipos de operadores relacionais:**
+
+| Operador | Operação |
+|:--------:|----------|
+| `==` | Igualdade |
+| `!=` | Diferença |
+| `<` | Menor que |
+| `>` | Maior que |
+| `<=` | Menor ou igual |
+| `>=` | Maior ou igual |
+
+**Tipos de operadores lógicos:**
+
+| Operador | Operação |
+|:--------:|----------|
+| `&&` | "E" |
+| `\|\|` | "OU" |
+| `!` | "NÃO" |
+
+**Tipos de operadores de atribuição:**
+
+| Operador | Operação |
+|:--------:|----------|
+| `=` | Atribuição simples |
+| `+=` | Atribuição com adição |
+| `-=` | Atribuição com subtração |
+| `*=` | Atribuição com multiplicação |
+| `/=` | Atribuição com divisão |
+
+**Tipos de operadores bit a bit:**
+
+| Operador | Operação |
+|:--------:|----------|
+| `&` | "E" |
+| `\|` | "OU" |
+| `^` | "OU exclusivo" |
+| `!` | "NOT" |
+| `<<` | Deslocamento à esquerda |
+| `>>` | Deslocamento à direita |
+
+**Precedência de operadores:**
+
+| Grau | Operador(es) | Associatividade |
+|:----:|:------------:|:---------------:|
+| 1 | `=` `+=` `-=` `*=` `/=` | Direita para esquerda |
+| 2 | `\|\|` | Esquerda para direita |
+| 3 | `&&` | Esquerda para direita |
+| 4 | `==` `!=` `<` `>` `<=` `>=` | Sem associatividade |
+| 5 | `\|` | Esquerda para direita |
+| 6 | `^` | Esquerda para direita |
+| 7 | `&` | Esquerda para direita |
+| 8 | `<<` `>>` | Esquerda para direita |
+| 9 | `+` `-` | Esquerda para direita |
+| 10 | `*` `/` `%` | Esquerda para direita |
+| 11 | `!` | Direita para esquerda |
+
+**Comportamento do analisador léxico:**
+- Operadores compostos como `==` e `+=` devem ser reconhecidos antes dos simples, evitando que `==` seja tokenizado como dois `=` separados.
+- A distinção entre `!` lógico e `!` bit a bit é resolvida pelo analisador sintático, o léxico gera o mesmo token para ambos os casos.
