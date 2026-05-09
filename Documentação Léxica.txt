@@ -30,7 +30,19 @@ Tipos de comentários de documentação:
 Comportamento:
   Ao reconhecer a estrutura de um comentário, o compilador o ignora por completo, eliminando assim a criação de tokens a partir dele.
 
-3.Operadores
+3.Delimitadores
+  Os delimitadores são símbolos utilizados para estruturar e organizar o código-fonte da linguagem, separando expressões, parâmetros e blocos de comandos. O analisador léxico deve reconhecê-los e gerar os tokens correspondentes.
+
+Tipo de delimitadores: 
+  { } - Delimitação de blocos
+  ( ) - Agrupamento de expressões e parâmetros
+  [ ] - Vetores e índices
+  ;   - Finalização de instruções
+  ,   - Separação de parâmetros
+  :   - Associação de identificador e tipo
+  ::  - Acesso a módulos e namespaces
+
+4.Operadores
   Os operadores são símbolos responsáveis por realizar operações aritméticas, lógicas, relacionais e de atribuição entre valores.
 
 Tipos de operadores aritméticos:
@@ -86,15 +98,3 @@ Grau	Operador		      Associatividade
 Comportamento do analisador léxico:
   -Operadores compostos como == e += devem ser reconhecidos antes dos simples, evitando que == seja tokenizado como dois = separados.
   -A distinção entre ! lógico e ! bit a bit, é resolvida pelo analisador sintático, o léxico gera o mesmo token para ambos os casos.
-
-4.Delimitadores
-  Os delimitadores são símbolos utilizados para estruturar e organizar o código-fonte da linguagem, separando expressões, parâmetros e blocos de comandos. O analisador léxico deve reconhecê-los e gerar os tokens correspondentes.
-
-Tipo de delimitadores: 
-  { } - Delimitação de blocos
-  ( ) - Agrupamento de expressões e parâmetros
-  [ ] - Vetores e índices
-  ;   - Finalização de instruções
-  ,   - Separação de parâmetros
-  :   - Associação de identificador e tipo
-  ::  - Acesso a módulos e namespaces
