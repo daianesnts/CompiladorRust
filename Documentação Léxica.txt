@@ -1,0 +1,13 @@
+Identificadores
+  Os identificadores são nomes criados pelos programadores para referenciar elementos do programa, tais como variaveis, funções, enums,
+structs, módulos e constantes. Para isso, é importante que o compilador reconheça e consiga destinguir das palavras reservadas da linguagem.
+Regras dos Identificadores
+  -Deve começar com letras[a-z, A-Z] ou underscore(_)
+  -Os caractes podem ser seguidos de digitos e underscore
+  -Não podem ser iguais as palavras reservadas
+  -São case-sensitive, a mesma palavra com letras maiuscula e minuscula diferentes, são identificadores diferentes
+  -underscore(_) solitário é valido, significa valor ignorado.
+Expressões regulares
+  Exemplo: [a-zA-Z_][a-zA-Z0-9_]*
+Exemplos válidos: x, nome, _valor, calcular_media, Pessoa, x1
+Exemplos inválidos: 1x, meu-nome, @var, let.
