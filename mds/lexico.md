@@ -190,3 +190,60 @@ Estas são as palavras-chave atualmente utilizadas pela linguagem, com suas resp
 Identificadores brutos são a sintaxe que permite usar palavras-chave onde elas normalmente não seriam permitidas. Você utiliza um identificador bruto prefixando uma palavra-chave com r#.
 
 Isso é útil, por exemplo, para manter a interoperabilidade com diferentes edições do Rust ou para usar nomes de variáveis que coincidam com palavras reservadas.
+
+#### 6. Palavras Literais
+
+**Tipos Escalares**
+
+Representam um único valor. Rust possui quatro tipos principais.
+A. Inteiros
+
+Números sem casas decimais.
+
+| Tamanho | Com Sinal (i) | Sem Sinal (u) | Exemplo de Uso |
+|:-------:|:-------------:|:-------------:|:--------------:|
+| `8-bit` | i8 | u8 | Pequenos contadores |
+| `16-bit` | i16 | u16 | Compatibilidade com sistemas legados |
+| `32-bit` | i32 | u32 | Padrão do Rust (Equilíbrio de performance) |
+| `64-bit` | i64 | u64 | Números grandes (ex: timestamps) |
+| `128-bit` | i128 | u128 | Cálculos astronômicos ou criptográficos |
+| `Dinâmico` | isize | usize | Tamanho da arquitetura (ponteiros/índices) |
+
+B. Outros Escalares
+
+| `Tipo` | Descrição | Tamanho / Exemplo |
+|:------:|:---------:|:-----------------:|
+| `f32` | Ponto Flutuante (Precisão simples) | let x: f32 = 3.0; |
+| `f64` | "Ponto Flutuante (Padrão, precisão dupla)" | let y = 2.0; |
+| `bool` | Booleano (Verdadeiro ou falso) | "true, false (1 byte)" |
+| `char` | Caractere Unicode (4 bytes) | "'z', 'ℤ', '😻'" |
+
+**Tipos Compostos**
+Agrupam múltiplos valores em uma única variável.
+
+| `Tipo` | Homogeneidade | Tamanho | Acesso aos Elementos |
+|:------:|:-------------:|:-------:|:--------------------:|
+| `Tupla (tuple)` | Pode conter tipos diferentes | Fixo | Por ponto (tup.0) ou desestruturação |
+| `Matriz (array)` | Apenas o mesmo tipo | Fixo | Por colchetes e índice (a[0]) |
+
+**Inteiros Literais**
+Formatos especiais para escrever números no código.
+
+| `Formato` | Exemplo |
+|:------  -:|:-------:|
+| `Decimal` | 98_222 |
+| `Hexadecimal` | 0xff |
+| `Octal` | 0o77 |
+| `Binário` | 0b1111_0000 |
+| `Byte (u8 apenas)` | b'A' |
+
+**Diferenças: Array vs. Vetor**
+Embora ambos armazenem dados do mesmo tipo, o Rust os trata de formas distintas:
+
+| `Característica` | Matriz (Array) | Vetor (Vec<T>) |
+|:----------------:|:--------------:|:--------------:|
+| `Tamanho` | Fixo (Imutável após definição) | Dinâmico (Pode crescer/diminuir) |
+| `Alocação` | Pilha (Stack) | Monte (Heap) |
+| `Flexibilidade` | Baixa (Ideal para dados estáticos) | Alta (Mais comum no dia a dia) |
+
+
