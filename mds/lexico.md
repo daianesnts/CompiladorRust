@@ -132,3 +132,61 @@ Os operadores são símbolos responsáveis por realizar operações aritméticas
 **Comportamento do analisador léxico:**
 - Operadores compostos como `==` e `+=` devem ser reconhecidos antes dos simples, evitando que `==` seja tokenizado como dois `=` separados.
 - A distinção entre `!` lógico e `!` bit a bit é resolvida pelo analisador sintático, o léxico gera o mesmo token para ambos os casos.
+
+#### 5. Palavras reservadas.
+
+As listas a seguir contêm palavras reservadas para uso atual pela linguagem Rust. Como tal, elas não podem ser usadas como identificadores (exceto como identificadores brutos, conforme discutiremos na seção “Identificadores Brutos”). Identificadores são nomes de funções, variáveis, parâmetros, campos de estruturas, módulos, crates, constantes, macros, valores estáticos, atributos, tipos, traits ou tempos de vida (lifetimes).
+
+**Palavras reservadas em Uso**
+
+Estas são as palavras-chave atualmente utilizadas pela linguagem, com suas respectivas funções:
+
+| Palavra-chave | Descrição |
+|:-------------:|-----------|
+
+| `as` | Realiza casting primitivo, desambigua traits ou renomeia itens em use. |
+| `async` | Retorna um Future em vez de bloquear a thread atual. |
+| `await` |Suspende a execução até que o resultado de um Future esteja pronto. |
+| `break` | Sai de um loop imediatamente. |
+| `const` | Define itens constantes ou ponteiros crus constantes. |
+| continue | Avança para a próxima iteração do loop. |
+| `crate` | Em um caminho de módulo, refere-se à raiz da crate. |
+| `dyn` | Despacho dinâmico para um objeto de trait. |
+| `else` | Fluxo de exceção para construções if e if let. |
+| `enum` | Define uma enumeração. |
+| `extern` | Vincula uma função ou variável externa. |
+| `false` | Literal booleano falso. |
+| `fn` | Define uma função ou o tipo de ponteiro de função. |
+| `for` | Itera sobre itens, implementa uma trait ou especifica higher ranked lifetimes. |
+| `if` | Ramifica a execução com base em uma condição. |
+| `impl` | Implementa funcionalidades inerentes ou de traits. |
+| `in` | Parte da sintaxe do loop for. |
+| `let` |Vincula uma variável. |
+| `loop` | Executa um loop incondicionalmente. |
+| `match` | Associa um valor a padrões (patterns) |
+| `mod` | Define um módulo. |
+| `move` | Faz com que um fechamento (closure) tome posse de suas capturas.|
+| `mut` | Denota mutabilidade em referências, ponteiros ou vínculos de padrão. |
+| `pub` | Denota visibilidade pública em campos, blocos impl ou módulos. |
+| `ref` | Vincula por referência. |
+| `return` | Retorna de uma função. |
+| `Self` | Alias de tipo para o tipo que está sendo definido ou implementado. |
+| `self` | Assunto do método ou módulo atual. |
+| `static` | Variável global ou tempo de vida que dura toda a execução do programa. |
+| `struct` | Define uma estrutura. |
+| `super` | Módulo pai do módulo atual. |
+| `trait` | Define uma trait. |
+| `true` | Literal booleano verdadeiro. |
+| `type` | Define um alias de tipo ou tipo associado. |
+| `union` | Define uma união (palavra-chave apenas quando usada em declarações union). |
+| `unsafe` | Denota código, funções, traits ou implementações inseguras. |
+| `use` | Traz símbolos para o escopo. |
+| `where` | Denota cláusulas que restringem um tipo. |
+| `while` | Executa um loop condicionalmente baseado em uma expressão. |
+
+
+**Identificadores Brutos (Raw Identifiers)**
+
+Identificadores brutos são a sintaxe que permite usar palavras-chave onde elas normalmente não seriam permitidas. Você utiliza um identificador bruto prefixando uma palavra-chave com r#.
+
+Isso é útil, por exemplo, para manter a interoperabilidade com diferentes edições do Rust ou para usar nomes de variáveis que coincidam com palavras reservadas.
