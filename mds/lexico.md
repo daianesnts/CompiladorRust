@@ -1,6 +1,15 @@
 # 🔐 Linguagem Rust - Elementos Léxicos
 
-#### 1. Palavras Reservadas
+## 1. Introdução
+A linguagem Rust é uma linguagem compilada e estaticamente tipada, desenvolvida com foco em desempenho, segurança de memória e confiabilidade. Para possibilitar a implementação de um compilador dentro do escopo acadêmico da disciplina, será definido um subconjunto da linguagem original, preservando suas principais características.
+
+A análise léxica corresponde à primeira etapa do processo de compilação e tem como objetivo realizar a leitura do código-fonte, identificando e classificando os elementos da linguagem em tokens, que serão utilizados pelas etapas posteriores do compilador.
+
+A seguir, são apresentados os principais elementos léxicos reconhecidos pelo compilador, incluindo palavras reservadas, identificadores, literais, operadores, delimitadores e comentários.
+
+---
+
+## 2. Palavras Reservadas
 
 As listas a seguir contêm palavras reservadas para uso atual pela linguagem Rust. Como tal, elas não podem ser usadas como identificadores (exceto como identificadores brutos, conforme discutiremos na seção “Identificadores Brutos”). Identificadores são nomes de funções, variáveis, parâmetros, campos de estruturas, módulos, crates, constantes, macros, valores estáticos, atributos, tipos, traits ou tempos de vida (*lifetimes*).
 
@@ -58,7 +67,7 @@ Isso é útil, por exemplo, para manter a interoperabilidade com diferentes edi�
 
 ---
 
-#### 2. Identificadores
+## 3. Identificadores
 
 Os identificadores são nomes criados pelos programadores para referenciar elementos do programa, tais como variáveis, funções, enums, structs, módulos e constantes. Para isso, é importante que o compilador reconheça e consiga distinguir das palavras reservadas da linguagem.
 
@@ -79,7 +88,7 @@ Exemplos inválidos: `1x`, `meu-nome`, `@var`, `let`
 
 ---
 
-#### 3. Palavras Literais
+## 4. Palavras Literais
 
 **Tipos Escalares**
 
@@ -136,7 +145,7 @@ Embora ambos armazenem dados do mesmo tipo, o Rust os trata de formas distintas:
 
 ---
 
-#### 4. Operadores
+## 5. Operadores
 
 Os operadores são símbolos responsáveis por realizar operações aritméticas, lógicas, relacionais e de atribuição entre valores.
 
@@ -212,7 +221,7 @@ Os operadores são símbolos responsáveis por realizar operações aritméticas
 
 ---
 
-#### 5. Delimitadores
+## 6. Delimitadores
 
 Os delimitadores são símbolos utilizados para estruturar e organizar o código-fonte da linguagem, separando expressões, parâmetros e blocos de comandos. O analisador léxico deve reconhecê-los e gerar os tokens correspondentes.
 
@@ -230,7 +239,7 @@ Os delimitadores são símbolos utilizados para estruturar e organizar o código
 
 ---
 
-#### 6. Comentários
+## 7. Comentários
 
 Comentários são trechos do código-fonte ignorados pelo compilador. Eles existem para documentar e explicar o código para os programadores. O analisador léxico deve reconhecê-los e descartá-los, sem gerar tokens que cheguem ao analisador sintático.
 
@@ -250,7 +259,7 @@ Ao reconhecer a estrutura de um comentário, o compilador o ignora por completo,
 
 ---
 
-#### 7. Erros Léxicos
+## 8. Erros Léxicos
 
 Erros léxicos ocorrem quando o analisador léxico encontra símbolos ou sequências de caracteres que não pertencem às regras definidas pela linguagem.
 
