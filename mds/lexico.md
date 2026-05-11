@@ -133,41 +133,40 @@ Os operadores são símbolos responsáveis por realizar operações aritméticas
 - Operadores compostos como `==` e `+=` devem ser reconhecidos antes dos simples, evitando que `==` seja tokenizado como dois `=` separados.
 - A distinção entre `!` lógico e `!` bit a bit é resolvida pelo analisador sintático, o léxico gera o mesmo token para ambos os casos.
 
-#### 5. Palavras reservadas.
+#### 5. Palavras Reservadas
 
-As listas a seguir contêm palavras reservadas para uso atual pela linguagem Rust. Como tal, elas não podem ser usadas como identificadores (exceto como identificadores brutos, conforme discutiremos na seção “Identificadores Brutos”). Identificadores são nomes de funções, variáveis, parâmetros, campos de estruturas, módulos, crates, constantes, macros, valores estáticos, atributos, tipos, traits ou tempos de vida (lifetimes).
+As listas a seguir contêm palavras reservadas para uso atual pela linguagem Rust. Como tal, elas não podem ser usadas como identificadores (exceto como identificadores brutos, conforme discutiremos na seção “Identificadores Brutos”). Identificadores são nomes de funções, variáveis, parâmetros, campos de estruturas, módulos, crates, constantes, macros, valores estáticos, atributos, tipos, traits ou tempos de vida (*lifetimes*).
 
-**Palavras reservadas em Uso**
+**Palavras reservadas em uso**
 
 Estas são as palavras-chave atualmente utilizadas pela linguagem, com suas respectivas funções:
 
 | Palavra-chave | Descrição |
 |:-------------:|-----------|
-
-| `as` | Realiza casting primitivo, desambigua traits ou renomeia itens em use. |
-| `async` | Retorna um Future em vez de bloquear a thread atual. |
-| `await` |Suspende a execução até que o resultado de um Future esteja pronto. |
+| `as` | Realiza casting primitivo, desambigua traits ou renomeia itens em `use`. |
+| `async` | Retorna um `Future` em vez de bloquear a thread atual. |
+| `await` | Suspende a execução até que o resultado de um `Future` esteja pronto. |
 | `break` | Sai de um loop imediatamente. |
 | `const` | Define itens constantes ou ponteiros crus constantes. |
-| continue | Avança para a próxima iteração do loop. |
+| `continue` | Avança para a próxima iteração do loop. |
 | `crate` | Em um caminho de módulo, refere-se à raiz da crate. |
 | `dyn` | Despacho dinâmico para um objeto de trait. |
-| `else` | Fluxo de exceção para construções if e if let. |
+| `else` | Fluxo de exceção para construções `if` e `if let`. |
 | `enum` | Define uma enumeração. |
 | `extern` | Vincula uma função ou variável externa. |
 | `false` | Literal booleano falso. |
 | `fn` | Define uma função ou o tipo de ponteiro de função. |
-| `for` | Itera sobre itens, implementa uma trait ou especifica higher ranked lifetimes. |
+| `for` | Itera sobre itens, implementa uma trait ou especifica *higher ranked lifetimes*. |
 | `if` | Ramifica a execução com base em uma condição. |
 | `impl` | Implementa funcionalidades inerentes ou de traits. |
-| `in` | Parte da sintaxe do loop for. |
-| `let` |Vincula uma variável. |
+| `in` | Parte da sintaxe do loop `for`. |
+| `let` | Vincula uma variável. |
 | `loop` | Executa um loop incondicionalmente. |
-| `match` | Associa um valor a padrões (patterns) |
+| `match` | Associa um valor a padrões (*patterns*). |
 | `mod` | Define um módulo. |
-| `move` | Faz com que um fechamento (closure) tome posse de suas capturas.|
+| `move` | Faz com que um fechamento (*closure*) tome posse de suas capturas. |
 | `mut` | Denota mutabilidade em referências, ponteiros ou vínculos de padrão. |
-| `pub` | Denota visibilidade pública em campos, blocos impl ou módulos. |
+| `pub` | Denota visibilidade pública em campos, blocos `impl` ou módulos. |
 | `ref` | Vincula por referência. |
 | `return` | Retorna de uma função. |
 | `Self` | Alias de tipo para o tipo que está sendo definido ou implementado. |
@@ -178,16 +177,15 @@ Estas são as palavras-chave atualmente utilizadas pela linguagem, com suas resp
 | `trait` | Define uma trait. |
 | `true` | Literal booleano verdadeiro. |
 | `type` | Define um alias de tipo ou tipo associado. |
-| `union` | Define uma união (palavra-chave apenas quando usada em declarações union). |
+| `union` | Define uma união (palavra-chave apenas quando usada em declarações `union`). |
 | `unsafe` | Denota código, funções, traits ou implementações inseguras. |
 | `use` | Traz símbolos para o escopo. |
 | `where` | Denota cláusulas que restringem um tipo. |
 | `while` | Executa um loop condicionalmente baseado em uma expressão. |
 
-
 **Identificadores Brutos (Raw Identifiers)**
 
-Identificadores brutos são a sintaxe que permite usar palavras-chave onde elas normalmente não seriam permitidas. Você utiliza um identificador bruto prefixando uma palavra-chave com r#.
+Identificadores brutos são a sintaxe que permite usar palavras-chave onde elas normalmente não seriam permitidas. Você utiliza um identificador bruto prefixando uma palavra-chave com `r#`.
 
 Isso é útil, por exemplo, para manter a interoperabilidade com diferentes edições do Rust ou para usar nomes de variáveis que coincidam com palavras reservadas.
 
@@ -196,54 +194,52 @@ Isso é útil, por exemplo, para manter a interoperabilidade com diferentes edi�
 **Tipos Escalares**
 
 Representam um único valor. Rust possui quatro tipos principais.
-A. Inteiros
 
+**A. Inteiros**
 Números sem casas decimais.
 
-| Tamanho | Com Sinal (i) | Sem Sinal (u) | Exemplo de Uso |
+| Tamanho | Com Sinal (`i`) | Sem Sinal (`u`) | Exemplo de Uso |
 |:-------:|:-------------:|:-------------:|:--------------:|
-| `8-bit` | i8 | u8 | Pequenos contadores |
-| `16-bit` | i16 | u16 | Compatibilidade com sistemas legados |
-| `32-bit` | i32 | u32 | Padrão do Rust (Equilíbrio de performance) |
-| `64-bit` | i64 | u64 | Números grandes (ex: timestamps) |
-| `128-bit` | i128 | u128 | Cálculos astronômicos ou criptográficos |
-| `Dinâmico` | isize | usize | Tamanho da arquitetura (ponteiros/índices) |
+| `8-bit` | `i8` | `u8` | Pequenos contadores |
+| `16-bit` | `i16` | `u16` | Compatibilidade com sistemas legados |
+| `32-bit` | `i32` | `u32` | Padrão do Rust (Equilíbrio de performance) |
+| `64-bit` | `i64` | `u64` | Números grandes (ex: timestamps) |
+| `128-bit` | `i128` | `u128` | Cálculos astronômicos ou criptográficos |
+| `Dinâmico` | `isize` | `usize` | Tamanho da arquitetura (ponteiros/índices) |
 
-B. Outros Escalares
+**B. Outros Escalares**
 
-| `Tipo` | Descrição | Tamanho / Exemplo |
+| Tipo | Descrição | Tamanho / Exemplo |
 |:------:|:---------:|:-----------------:|
-| `f32` | Ponto Flutuante (Precisão simples) | let x: f32 = 3.0; |
-| `f64` | "Ponto Flutuante (Padrão, precisão dupla)" | let y = 2.0; |
-| `bool` | Booleano (Verdadeiro ou falso) | "true, false (1 byte)" |
-| `char` | Caractere Unicode (4 bytes) | "'z', 'ℤ', '😻'" |
+| `f32` | Ponto Flutuante (Precisão simples) | `let x: f32 = 3.0;` |
+| `f64` | Ponto Flutuante (Padrão, precisão dupla) | `let y = 2.0;` |
+| `bool` | Booleano (Verdadeiro ou falso) | `true`, `false` (1 byte) |
+| `char` | Caractere Unicode (4 bytes) | `'z'`, `'ℤ'`, `'😻'` |
 
 **Tipos Compostos**
 Agrupam múltiplos valores em uma única variável.
 
-| `Tipo` | Homogeneidade | Tamanho | Acesso aos Elementos |
+| Tipo | Homogeneidade | Tamanho | Acesso aos Elementos |
 |:------:|:-------------:|:-------:|:--------------------:|
-| `Tupla (tuple)` | Pode conter tipos diferentes | Fixo | Por ponto (tup.0) ou desestruturação |
-| `Matriz (array)` | Apenas o mesmo tipo | Fixo | Por colchetes e índice (a[0]) |
+| `Tupla` | Pode conter tipos diferentes | Fixo | Por ponto (`tup.0`) ou desestruturação |
+| `Matriz` | Apenas o mesmo tipo | Fixo | Por colchetes e índice (`a[0]`) |
 
 **Inteiros Literais**
 Formatos especiais para escrever números no código.
 
-| `Formato` | Exemplo |
-|:------  -:|:-------:|
-| `Decimal` | 98_222 |
-| `Hexadecimal` | 0xff |
-| `Octal` | 0o77 |
-| `Binário` | 0b1111_0000 |
-| `Byte (u8 apenas)` | b'A' |
+| Formato | Exemplo |
+|:---------|:-------:|
+| `Decimal` | `98_222` |
+| `Hexadecimal` | `0xff` |
+| `Octal` | `0o77` |
+| `Binário` | `0b1111_0000` |
+| `Byte (u8 apenas)` | `b'A'` |
 
 **Diferenças: Array vs. Vetor**
 Embora ambos armazenem dados do mesmo tipo, o Rust os trata de formas distintas:
 
-| `Característica` | Matriz (Array) | Vetor (Vec<T>) |
+| Característica | Matriz (*Array*) | Vetor (`Vec<T>`) |
 |:----------------:|:--------------:|:--------------:|
-| `Tamanho` | Fixo (Imutável após definição) | Dinâmico (Pode crescer/diminuir) |
-| `Alocação` | Pilha (Stack) | Monte (Heap) |
-| `Flexibilidade` | Baixa (Ideal para dados estáticos) | Alta (Mais comum no dia a dia) |
-
-
+| **Tamanho** | Fixo (Imutável após definição) | Dinâmico (Pode crescer/diminuir) |
+| **Alocação** | Pilha (*Stack*) | Monte (*Heap*) |
+| **Flexibilidade** | Baixa (Ideal para dados estáticos) | Alta (Mais comum no dia a dia) |
