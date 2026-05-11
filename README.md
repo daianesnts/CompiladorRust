@@ -1,7 +1,7 @@
 # 🦀 Projeto de Compiladores em Rust
 
 <p align="left">
-  Projeto desenvolvido para a disciplina de <b>Linguagens Formais e Tradutores (LFT)</b>.
+  Projeto sendo desenvolvido para a disciplina de <b>Linguagens Formais e Tradutores (LFT)</b>.
   O objetivo é aplicar conceitos de análise de linguagens e construção de compiladores utilizando a linguagem Rust.
 </p>
 
@@ -32,3 +32,4 @@
 Abaixo está o cronograma de atividades:
 
 1. **Atividade 1:** Elaboração da Documentação Léxica.
+2. **Atividade 2:** Elaboração da Documentação Sintática.
