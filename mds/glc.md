@@ -3,28 +3,46 @@ A seguinte gramática será utilizada para desenvolver o analisador sintático d
 
 ```
 program → funcdecl | funcdecl program
+
 funcdecl → signature body
+
 signature → "fn" ID"("sigparams")" rettype
-rettype → "->" TYPE | 
+
+rettype → "->" TYPE | ε
+
 sigparams → sigparam | ε
+
 sigparam → ID":" TYPE | ID":" TYPE, sigparam
+
 body → "{"stmts"}"
+
 stmts → stm | stm stmts
+
 stm → decl |
       exp |
       ifr |
       "loop" "{"stmts"}" |
-      "while" exp "{"stmts"}" |
+      "while" exp "{"stmts"}"
+      
 ifr → ifri | ifrii
+
 ifri → "if" exp "{"ifri"}" "else" "{"ifri"}"
+
 ifrii → "if" exp "{"ifr"}" |
        "if" exp "{"ifri"}" "else" "{"ifrii"}"
+       
 decl → decllet | declmut | declcons | declexp
+
 decllet → "let" IDtypedecl "=" exp";"
+
 declmut → "let" "mut" IDtypedecl "=" exp";"
+
 declcons → "const" ID":" TYPE "=" NUM";"
+
 declexp → ID "=" exp";"
+
 typedecl → ":" TYPE | ε
+
 exp → exp "+" exp |
       exp "-" exp |
       exp "*" exp |
@@ -34,6 +52,8 @@ exp → exp "+" exp |
       "{"stmts exp"}"
       NUM |
       ID
+      
 call → ID"("params")" | ID"("")"
+
 params → exp"," params | exp
 ```
