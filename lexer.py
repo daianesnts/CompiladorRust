@@ -3,7 +3,6 @@ import ply.lex as lex
 from indentstack import IndentStack
 
 indentStack = IndentStack()
-indentStack.push(0)
 
 states = (
     ('mltlncomnt', 'exclusive'), # Comentário de múltiplas linhas
