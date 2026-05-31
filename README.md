@@ -33,3 +33,5 @@ Abaixo está o cronograma de atividades:
 
 1. **Atividade 1:** Elaboração da Documentação Léxica.
 2. **Atividade 2:** Elaboração da Documentação Sintática.
+3. **Atividade 3:** Elaboração da Documentação Sintática e Exemplos de Código.
+4. **Atividade 4:** Elaboração da Gramática Livre de Contexto e implementação no PLY.
