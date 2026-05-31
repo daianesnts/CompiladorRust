@@ -10,46 +10,99 @@ states = (
 )
 
 reserved = {
-    'let': 'LET',
-    'mut': 'MUT',
-    'const': 'CONST',
-    'if': 'IF',
-    'else': 'ELSE',
-    'while': 'WHILE',
-    'loop': 'LOOP',
-    'break': 'BREAK',
-    'fn': 'FN',
-    'return': 'RETURN'
+    'as':       'AS',
+    'async':    'ASYNC',
+    'await':    'AWAIT',
+    'break':    'BREAK',
+    'const':    'CONST',
+    'continue': 'CONTINUE',
+    'crate':    'CRATE',
+    'dyn':      'DYN',
+    'else':     'ELSE',
+    'enum':     'ENUM',
+    'extern':   'EXTERN',
+    'false':    'FALSE',
+    'fn':       'FN',
+    'for':      'FOR',
+    'if':       'IF',
+    'impl':     'IMPL',
+    'in':       'IN',
+    'let':      'LET',
+    'loop':     'LOOP',
+    'match':    'MATCH',
+    'mod':      'MOD',
+    'move':     'MOVE',
+    'mut':      'MUT',
+    'pub':      'PUB',
+    'ref':      'REF',
+    'return':   'RETURN',
+    'Self':     'SELFTYPE',
+    'self':     'SELFVAL',
+    'static':   'STATIC',
+    'struct':   'STRUCT',
+    'super':    'SUPER',
+    'trait':    'TRAIT',
+    'true':     'TRUE',
+    'type':     'TYPE',
+    'union':    'UNION',
+    'unsafe':   'UNSAFE',
+    'use':      'USE',
+    'where':    'WHERE',
+    'while':    'WHILE',
 }
 
-tokens = ['ID', 'NUMBER', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'ATTRIB',
-          'MODL', 'EQUALS', 'NEQUALS', 'LESS', 'GRTR', 'LESSEQ', 'GRTREQ',
-          'LOGAND', 'LOGOR', "LOGNOT",
-          'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'LBRACE', 'RBRACE',
-          'COLON', 'DCOLON', 'SCOLON', 'COMMA', 'INDENT', 'DEINDENT',
+tokens = ['ID', 'NUMBER', # Operadores aritméticos
+          'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'MODL', 
+          'ATTRIB', 'PLUSATTRIB', 'MINUSATTRIB', 'TIMESATTRIB', 'DIVIDEATTRIB', # Operadores de atribuição simples e compostos
+          'EQUALS', 'NEQUALS', 'LESSEQ', 'GRTREQ', 'LESS', 'GRTR', # Operadores relacionais
+          'LOGAND', 'LOGOR', "LOGNOT", # Operadores lógicos
+          'BITAND', 'BITOR', 'BITXOR', 'LSHIFT', 'RSHIFT', # Operadores bit a bit
+          'ARROW', #Seta de retorno
+          'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'LBRACE', 'RBRACE', # Delimitadores
+          'COLON', 'DCOLON', 'SCOLON', 'COMMA', 
+          'INDENT', 'DEINDENT', # Indenteção
           ]+ list(reserved.values())
 
 t_ignore    = ' '
-# Operações básicas
+
+# Atribuição composta
+t_PLUSATTRIB    = r'\+='
+t_MINUSATTRIB   = r'-='
+t_TIMESATTRIB   = r'\*='
+t_DIVIDEATTRIB  = r'/='
+
+# Operadores relacionais compostos
+t_EQUALS    = r'=='
+t_NEQUALS   = r'!='
+t_LESSEQ    = r'<='
+t_GRTREQ    = r'>='
+
+# Operadores lógicos compostos
+t_LOGAND    = r'&&'
+t_LOGOR     = r'\|\|'
+
+# Bit a bit compostos
+t_LSHIFT        = r'<<'
+t_RSHIFT        = r'>>'
+ 
+# Seta de retorno
+t_ARROW         = r'->'
+ 
+# Namespace duplo 
+t_DCOLON        = r'::'
+
+# Operadores simples
 t_PLUS      = r'\+'
 t_MINUS     = r'-'
 t_TIMES     = r'\*'
 t_DIVIDE    = r'/'
 t_ATTRIB    = r'='
 t_MODL      = r'%'
-
-# Operadores relacionais
-t_EQUALS    = r'=='
-t_NEQUALS   = r'!='
 t_LESS      = r'<'
 t_GRTR      = r'>'
-t_LESSEQ    = r'<='
-t_GRTREQ    = r'>='
-
-# Operadores lógicas
-t_LOGAND    = r'&&'
-t_LOGOR     = r'\|\|'
-t_LOGNOT    = r'!!'
+t_LOGNOT    = r'!'      
+t_BITOR     = r'\|'
+t_BITXOR    = r'\^'
 
 # Delimitadores
 t_LPAREN    = r'\('
@@ -59,7 +112,6 @@ t_RBRACKET  = r'\]'
 t_LBRACE    = r'\{'
 t_RBRACE    = r'\}'
 t_COLON     = r':'
-t_DCOLON    = r'::'
 t_SCOLON    = r';'
 t_COMMA     = r','
 
