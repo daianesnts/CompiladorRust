@@ -13,13 +13,11 @@ topdecl  → funcdecl | structdecl | traitdecl
 
 funcdecl → signature body
 
-signature → "fn" ID "(" sigparams ")" rettype
+signature → "fn" ID "(" sigparams ")" "->" TYPE | "fn" ID "(" sigparams ")" 
 
-rettype → "->" TYPE | ε
+sigparams → sigparam | sigparam "," sigparams
 
-sigparams → sigparam | ε
-
-sigparam → ID ":" TYPE | ID ":" TYPE "," sigparam
+sigparam → ID ":" TYPE
 
 body → "{" stmts "}"
 ```
@@ -28,13 +26,13 @@ body → "{" stmts "}"
 
 structdecl   → "struct" ID "{" structfields "}"
 
-structfields → structfield | structfield "," structfields | ε
+structfields → structfield | structfield "," structfields
 
 structfield  → ID ":" TYPE
 
 traitdecl    → "trait" ID "{" traitbody "}"
 
-traitbody    → signature ";" traitbody | ε
+traitbody    → signature | signature ";" traitbody
 ```
 ```
 #COMANDOS
@@ -110,7 +108,7 @@ exp_mul     → exp_mul "*" exp_unary |
               exp_mul "%" exp_unary |
               exp_unary
 
-exp_unary   → "!" exp_unary | exp_primary
+exp_unary   → "!" exp_unary | "-" exp_unary | exp_primary
 
 exp_primary → call |
               NUM | 
