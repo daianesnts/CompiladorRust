@@ -2,23 +2,6 @@ import ply.yacc as yacc
 import ply.lex as lex
 import lexer
 
-# Token fictício usado apenas para resolver problema de precedência 
-tokens = lexer.tokens + ['UMINUS']
-
-precedence = (
-    ('right', 'ATTRIB', 'PLUSATTRIB', 'MINUSATTRIB', 'TIMESATTRIB', 'DIVIDEATTRIB'),
-    ('left',  'LOGOR'),
-    ('left',  'LOGAND'),
-    ('nonassoc', 'EQUALS', 'NEQUALS', 'LESS', 'GRTR', 'LESSEQ', 'GRTREQ'),
-    ('left',  'BITOR'),
-    ('left',  'BITXOR'),
-    ('left',  'BITAND'),
-    ('left',  'LSHIFT', 'RSHIFT'),
-    ('left',  'PLUS', 'MINUS'),
-    ('left',  'TIMES', 'DIVIDE', 'MODL'),
-    ('right', 'LOGNOT', 'UMINUS'),
-)
-
 #PRORAMA
 def p_program_single(p):
  
@@ -173,8 +156,7 @@ def p_exp_unary_not(p):
    
  
 def p_exp_unary_minus(p):
-    'exp : MINUS exp %prec UMINUS'
-    p[0] = -p[2]
+ 
  
 def p_exp_paren(p):
     
