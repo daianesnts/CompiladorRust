@@ -60,7 +60,7 @@ tokens = ['ID', 'NUMBER', # Operadores aritméticos
           'ARROW', #Seta de retorno
           'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'LBRACE', 'RBRACE', # Delimitadores
           'COLON', 'DCOLON', 'SCOLON', 'COMMA', 
-          'INDENT', 'DEINDENT', # Indenteção
+          'INDENT', 'DEINDENT', # Indentação
           ]+ list(reserved.values())
 
 t_ignore    = ' '

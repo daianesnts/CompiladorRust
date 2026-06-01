@@ -174,7 +174,7 @@ def p_exp_unary_not(p):
  
 def p_exp_unary_minus(p):
     'exp : MINUS exp %prec UMINUS'
-    p[0] = ('unary', '-', p[2])
+    p[0] = -p[2]
  
 def p_exp_paren(p):
     
