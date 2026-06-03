@@ -13,7 +13,13 @@ topdecl  → funcdecl | structdecl | traitdecl
 
 funcdecl → signature body
 
-signature → "fn" ID "(" sigparams ")" "->" TYPE | "fn" ID "(" sigparams ")" 
+signature → "fn" ID sigaturei
+
+signaturei → signaturep | signaturenp
+
+signaturep → "(" sigparams ")" "->" TYPE | "fn" ID "(" sigparams ")" 
+
+signaturenp → "(" ")" "->" TYPE | "fn" ID "(" ")"
 
 sigparams → sigparam | sigparam "," sigparams
 
