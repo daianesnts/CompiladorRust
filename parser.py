@@ -2,58 +2,76 @@ import ply.yacc as yacc
 import ply.lex as lex
 import lexer
 
-#PRORAMA
+#PROGRAMA
 def p_program_single(p):
- 
+ 'program : topdecl'
+ p[0] = ('program', [p[1]]))
 
 def p_program_multi(p):
-    
+ 'program : topdecl program'
+ p[0] = ('program', [p[1]] + p[2][1])
  
 def p_topdecl_func(p):
-    
+ 'topdecl : funcdecl'
+ p[0] = p[1]
  
 def p_topdecl_struct(p):
-    
- 
+ 'topdecl : structdecl'
+ p[0] = p[1]
+
 def p_topdecl_trait(p):
-    
+ 'topdecl : traitdecl'
+ p[0] = p[1]
  
 
 #FUNCOES 
 def p_funcdecl(p):
-    
+ 'funcdecl : signature body'
+ p[0] = ('funcdecl', p[1], p[2])
  
 def p_signature(p):
-    
+ 'signature : FN ID signaturei'
+ p[0] = ('signature', p[2], p[3])
  
-def p_rettype_arrow(p):
-    
+def p_signaturei_p(p):
+ 'signaturei : signaturep'
+ p[0] = p[1]
 
+def p_signaturei_np(p):
+ 'signaturei : signaturenp'
+ p[0] = p[1]
 
-def p_rettype_empty(p):
-    
- 
-def p_sigparams_some(p):
-    
+def p_signaturep_arrow(p):
+ 'signaturep : LPAREN sigparams RPAREN ARROW TYPE'
+ p[0] = ('signaturep', p[2], p[5])
+
+def p_signaturep_no_arrow(p):
+ 'signaturep : FN ID LPAREN sigparams RPAREN'
+ p[0] = ('signaturep', p[4], None)
+
+def p_signaturenp_arrow(p):
+ 'signaturenp : LPAREN RPAREN ARROW TYPE'
+ p[0] = ('signaturenp', [], p[4])
+
+def p_signaturenp_no_arrow(p):
+ 'signaturenp : FN ID LPAREN RPAREN'
+ p[0] = ('signaturenp', [], None)
 
 def p_sigparams_empty(p):
-    
- 
-def p_sigparam_single(p):
-    
- 
-def p_sigparam_multi(p):
-    
+ 'sigparams : sigparam'
+ p[0] = [p[1]]
 
+def p_sigparams_COMMA(p):
+ 'sigparams : sigparam COMMA sigparams'
+ p[0] = [p[1]] + p[3]
+
+def p_sigparam_single(p):
+ 'sigparam : ID COLON TYPE'
+ p[0] = ('param', p[1], p[3])
 def p_body(p):
-    
- 
-def p_body_expr(p):
-    
- 
-def p_body_only_expr(p):
-    
- 
+ 'body : LBRACE stmts RBRACE'
+ p[0] = ('body', p[2])
+
 
 #STRUCT E TRAIT 
 def p_structdecl(p):
