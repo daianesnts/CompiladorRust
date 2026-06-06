@@ -101,35 +101,46 @@ def p_traitbody(p):
 
 #COMANDOS 
 def p_stmts_single(p):
-    
- 
+   '''stmts : stmt'''
+   p[0] = [p[1]]
+
 def p_stmts_multi(p):
-    
- 
+   '''stmts : stmts stmt'''
+   p[0] = p[1] + [p[2]]
+
 def p_stm_decl(p):
-    
+   '''stmt : attrib
+            | ifr
+            | expr SCOLON'''
+   p[0] = p[1]
  
 def p_stm_exp(p):
-    
+   '''stmt : expr SCOLON'''
+   p[0] = ('exp', p[1])
  
 def p_stm_ifr(p):
-    
+   '''stmt : ifr'''
+   p[0] = p[1]
  
 def p_stm_loop(p):
-    
+   '''stmt : LOOP expr'''
+   p[0] = ('loop', p[2])
  
 def p_stm_while(p):
-    
+   '''stmt : WHILE expr expr'''
+   p[0] = ('while',p[2],p[3])
  
 def p_stm_return(p):
-    
+   '''stmt : RETURN expr SCOLON'''
+   p[0] = ('return', p[2])
  
 def p_stm_break(p):
-    
- 
-def p_stm_continue(p):
+   '''stmt : BREAK SCOLON'''
+   p[0] = ('break',)
 
- 
+def p_stm_continue(p):
+   '''stmt : CONTINUE SCOLON'''
+   p[0] = ('continue',)
 
 #IFELSE
 def p_ifr_no_else(p):
