@@ -96,8 +96,6 @@ t_LPAREN    = r'\('
 t_RPAREN    = r'\)'
 t_LBRACKET  = r'\['
 t_RBRACKET  = r'\]'
-t_LBRACE    = r'\{'
-t_RBRACE    = r'\}'
 t_COLON     = r':'
 t_SCOLON    = r';'
 t_COMMA     = r','
@@ -112,32 +110,42 @@ def t_NUMBER(t):
     t.value = int(t.value)
     return t
 
-def t_newline(t):
-    r'\n+'
-    t.lexer.lineno += len(t.value)
+def t_LBRACE(t):
+    r'\{'
+    indentStack.push(indentStack.peek() + 1)
+    return t
 
-# Função para identação
-'''
-def t_INDENT(t):
-    r'\t+'
-    tabs = len(t.value)
+def t_RBRACE(t):
+    r'\n[ \t]*\}'
+    t.lexer.lineno += 1
+
+    indent_str = t.value[1:]
+    if ' ' in indent_str:
+        raise Exception(f"Erro linha {t.lexer.lineno}: use tabs para indentação, não espaços")
+    indent_level = indent_str.count('\t')
     top = indentStack.peek()
-
-    if tabs == top:
-        return
-    if tabs > top:
-        indentStack.push(tabs)
-        return t
+        
+    if indent_level >= top or indent_level != top-1:
+        raise Exception(
+            f"Erro linha {t.lexer.lineno}:\nindentação inválida (esperava {top-1} tab(s), encontrou {indent_level})")
     indentStack.pop()
+    t.value = r'\}'
+    return t
+
+def t_newline(t):
+    r'\n[ \t]*'
+    t.lexer.lineno += 1
+
+    indent_str = t.value[1:]
+    if ' ' in indent_str:
+        raise Exception(f"Erro linha {t.lexer.lineno}: use tabs para indentação, não espaços")
+    indent_level = indent_str.count('\t')
     top = indentStack.peek()
-    while top > 0:
-        if tabs == top:
-            t.type = 'DEINDENT'
-            return t
-        indentStack.pop()
-        top = indentStack.peek()
-'''
-    
+        
+    if indent_level > top or indent_level < top:
+        raise Exception(
+            f"Erro linha {t.lexer.lineno}:\nindentação inválida (esperava {top} tab(s), encontrou {indent_level})") 
+
 def t_error(t):
    print(f"Illegal character {t.value[0]}")
    t.lexer.skip(1)
