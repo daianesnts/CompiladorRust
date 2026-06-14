@@ -169,7 +169,7 @@ def p_ifr_else(p):
  
 def p_ifr_elseif(p):
     '''ifr : IF expr block ELSE ifr'''
-   p[0] = ('if', p[2], p[3], 'else', p[5])
+    p[0] = ('if', p[2], p[3], 'else', p[5])
  
 #DECLARACOES
 def p_decl(p):
@@ -286,5 +286,5 @@ def p_error(p):
 def main():
  
  
-if __name__ == '__main__':
-    main()
+    if __name__ == '__main__':
+        main()
