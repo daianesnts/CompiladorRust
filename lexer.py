@@ -50,7 +50,7 @@ tokens = ['ID', 'NUMBER', # Operadores aritméticos
           'INDENT', 'DEINDENT', # Indentação
           ]+ list(reserved.values())
 
-t_ignore    = ' '
+t_ignore    = ' \t'
 
 # Atribuição composta
 t_PLUSATTRIB    = r'\+='
@@ -117,6 +117,7 @@ def t_newline(t):
     t.lexer.lineno += len(t.value)
 
 # Função para identação
+'''
 def t_INDENT(t):
     r'\t+'
     tabs = len(t.value)
@@ -135,8 +136,8 @@ def t_INDENT(t):
             return t
         indentStack.pop()
         top = indentStack.peek()
+'''
     
-
 def t_error(t):
    print(f"Illegal character {t.value[0]}")
    t.lexer.skip(1)
