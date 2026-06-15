@@ -1,287 +1,329 @@
-from abc import abstractmethod
-from abc import ABC
+from sintaxeAbstrataABC import *
 
-#programa
-
-# sintaxeabstrata.py
-
-class Program:
-    def __init__(self, topdecls):
-        # topdecls será uma lista puramente em Python contendo as declarações do topo
-        self.topdecls = topdecls 
+#PROGRAMA
+class ProgramTopDecl(Program):
+    def __init__(self, topdecl):
+        self.topdecl = topdecl
 
     def accept(self, visitor):
-        return visitor.visitProgram(self)
+        return visitor.visitProgramTopDecl(self)
+    
+class ProgramTopDeclProgram(Program):
+    def __init__(self, topdecl, program):
+        self.topdecl = topdecl
+        self.program = program
 
+    def accept(self, visitor):
+        return visitor.visitProgramTopDeclProgram(self)
+    
+class TopDeclFuncDecl(TopDecl):
+    def __init__(self, funcdecl):
+        self.funcdecl = funcdecl
 
-#FUNÇÕES
-class FuncDecl:
+    def accept(self, visitor):
+        return visitor.visitTopDeclFuncDecl(self)
+
+class TopDeclStructDecl(TopDecl):
+    def __init__(self, structdecl):
+        self.structdecl = structdecl
+
+    def accept(self, visitor):
+        return visitor.visitTopDeclStructDecl(self)
+
+class TopDeclTraitDecl(TopDecl):
+    def __init__(self, traitdecl):
+        self.traitdecl = traitdecl
+
+    def accept(self, visitor):
+        return visitor.visitTopDeclTraitDecl(self)
+
+#FUNCOES
+class FuncDeclSignatureBody(FuncDecl):
     def __init__(self, signature, body):
-        self.signature = signature  # Objeto da classe Signature
-        self.body = body            # Objeto da classe Body
+        self.signature = signature
+        self.body = body
 
     def accept(self, visitor):
-        return visitor.visitFuncDecl(self)
-
-
-class Signature:
-    def __init__(self, id, sigparams, return_type):
-        self.id = id                # String com o nome da função
-        self.sigparams = sigparams  # Lista puramente em Python de objetos SigParam
-        self.return_type = return_type  # String com o tipo de retorno, ou None se não houver
+        return visitor.visitFuncDeclSignatureBody(self)
+    
+class SignatureFunc(Signature):
+    def ___init___(self, id, signaturei):
+        self.id = id
+        self.signaturei = signaturei
 
     def accept(self, visitor):
-        return visitor.visitSignature(self)
+        return visitor.visitSignatureFunc(self)
+    
+class SignatureISigP(SignatureI):
+    def __init__(self, signaturep):
+        self.signaturep = signaturep
 
+    def accept(self, visitor):
+        return visitor.visitSignatureISigP(self)
+    
+class SignatureISigNP(SignatureI):
+    def __init__(self, signaturenp):
+        self.signaturenp = signaturenp
 
-class SigParam:
+    def accept(self, visitor):
+        return visitor.visitSignatureISigNP(self)
+    
+class SignatureFuncP(SignatureP):
+    def __init__(self, sigparams, type):
+        self.sigparams = sigparams
+        self.type = type
+
+    def accept(self, visitor):
+        return visitor.visitSignatureFuncP(self)
+    
+class SignatureFuncPVoid(SignatureP):
+    def __init__(self, sigparams):
+        self.sigparams = sigparams
+
+    def accept(self, visitor):
+        return visitor.visitSignatureFuncPVoid(self)
+    
+class SignatureFuncNP(SignatureNP):
+    def __init__(self, type):
+        self.type = type
+
+    def accept(self, visitor):
+        return visitor.visitSignatureFuncNP(self)
+    
+class SignatureFuncNPVoid(SignatureNP):
+    def __init__(self):
+        pass
+
+    def accept(self, visitor):
+        return visitor.visitSignatureFuncNPVoid(self)
+    
+class SigParamsSingle(SigParams):
+    def __init__(self, sigparam):
+        self.sigparam = sigparam
+
+    def accept(self, visitor):
+        return visitor.visitSigParamsSingle(self)
+    
+class SigParamsMulti(SigParams):
+    def __init__(self, sigparam, sigparams):
+        self.sigparam = sigparam
+        self.sigparams = sigparams
+
+    def accept(self, visitor):
+        return visitor.visitSigParamsMulti(self)
+    
+class SigParam(SigParam):
     def __init__(self, id, type):
-        self.id = id                # String com o nome do parâmetro
-        self.type = type            # String com o tipo do parâmetro
+        self.id = id
+        self.type = type
 
     def accept(self, visitor):
         return visitor.visitSigParam(self)
-
-
-class Body:
+    
+class BodyConcrete(Body):
     def __init__(self, stmts):
-        self.stmts = stmts          # Lista puramente em Python com os comandos/statements
+        self.stmts = stmts
 
     def accept(self, visitor):
-        return visitor.visitBody(self)
-    
+        return visitor.visitBodyConcrete(self)
 
-#STRUCT E TRAIT 
-class StructDecl:
+#STRUCT E TRAIT  
+class StructDeclConcrete(StructDecl):
     def __init__(self, id, structfields):
-        self.id = id                    # String com o nome da struct
-        self.structfields = structfields  # Lista em Python de objetos StructField
+        self.id = id
+        self.structfields = structfields
 
     def accept(self, visitor):
-        return visitor.visitStructDecl(self)
+        return visitor.visitStructDeclConcrete(self)
 
+class StructFieldsField(StructFields):
+    def __init__(self, structfield):
+        self.structfield = structfield
 
-class StructField:
+    def accept(self, visitor):
+        return visitor.visitStructFieldsField(self)
+    
+class StructFieldsMulti(StructFields):
+    def __init__(self, structfield, structfields):
+        self.structfield = structfield
+        self.structfields = structfields
+
+    def accept(self, visitor):
+        return visitor.visitStructFieldsMulti(self)
+    
+class StructFieldConcrete(StructField):
     def __init__(self, id, type):
-        self.id = id                    # String com o nome do campo
-        self.type = type                # String com o tipo do campo
+        self.id = id
+        self.type = type
 
     def accept(self, visitor):
-        return visitor.visitStructField(self)
-
-
-class TraitDecl:
+        return visitor.visitStructFieldConcrete(self)
+    
+class TraitDeclConcrete(TraitDecl):
     def __init__(self, id, traitbody):
-        self.id = id                    # String com o nome do trait
-        self.traitbody = traitbody      # Lista em Python de objetos Signature (ou None/Vazia)
+        self.id = id
+        self.traitbody = traitbody
 
     def accept(self, visitor):
-        return visitor.visitTraitDecl(self)
+        return visitor.visitTraitDeclConcrete(self)
+
+class TraitBodySingle(TraitBody):
+    def __init__(self, signature):
+        self.signature = signature
+        
+
+    def accept(self, visitor):
+        return visitor.visitTraitBodySingle(self)
+    
+class TraitBodyMulti(TraitBody):
+    def __init__(self, signature, traitbody):
+        self.signature = signature
+        self.traitbody = traitbody
+
+    def accept(self, visitor):
+        return visitor.visitTraitBodyMulti(self)
     
 
-#COMANDOS 
-class StmExp:
-    def __init__(self, expr):
-        self.expr = expr              # Objeto de expressão
+#COMANDOS
+class StmtsSingle(Stmts):
+    def __init__(self, stm):
+        self.stm = stm
+
+    def accept(self, visitor):
+        return visitor.visitStmtsSingle(self)
+
+class StmtsMulti(Stmts):
+    def __init__(self, stmts, stm):
+        self.stmts = stmts
+        self.stm = stm
+
+    def accept(self, visitor):
+        return visitor.visitStmtsMulti(self)
+    
+class StmDecl(Stm):
+    def __init__(self, decl):
+        self.decl = decl
+
+    def accept(self, visitor):
+        return visitor.visitStmDecl(self)
+    
+class StmExp(Stm):
+    def __init__(self, exp):
+        self.exp = exp
 
     def accept(self, visitor):
         return visitor.visitStmExp(self)
+    
+class StmIfr(Stm):
+    def __init__(self, ifr):
+        self.ifr = ifr
 
-
-class StmLoop:
-    def __init__(self, expr):
-        self.expr = expr              # Objeto de expressão (corpo ou condição do loop)
+    def accept(self, visitor):
+        return visitor.visitStmIfr(self)
+    
+class StmLoop(Stm):
+    def __init__(self, stmts):
+        self.stmts = stmts
 
     def accept(self, visitor):
         return visitor.visitStmLoop(self)
-
-
-class StmWhile:
-    def __init__(self, cond, expr_body):
-        self.cond = cond              # Expressão da condição
-        self.expr_body = expr_body    # Expressão/Bloco do corpo do while
+    
+class StmWhile(Stm):
+    def __init__(self, exp, stmts):
+        self.exp = exp
+        self.stmts = stmts
 
     def accept(self, visitor):
         return visitor.visitStmWhile(self)
-
-
-class StmReturn:
-    def __init__(self, expr):
-        self.expr = expr              # Expressão de retorno
+    
+class StmReturn(Stm):
+    def __init__(self, exp):
+        self.exp = exp
 
     def accept(self, visitor):
         return visitor.visitStmReturn(self)
-
-
-class StmBreak:
+    
+class StmBreak(Stm):
     def __init__(self):
-        pass                          # Não possui parâmetros adicionais
+        pass
 
     def accept(self, visitor):
         return visitor.visitStmBreak(self)
-
-
-class StmContinue:
+    
+class StmContinue(Stm):
     def __init__(self):
-        pass                          # Não possui parâmetros adicionais
+        pass
 
     def accept(self, visitor):
         return visitor.visitStmContinue(self)
     
-
-# IFELSE
-class StmIf:
-    def __init__(self, cond, then_block, else_block=None):
-        self.cond = cond              # Expressão da condição do IF
-        self.then_block = then_block  # Bloco executado se a condição for verdadeira
-        self.else_block = else_block  # Pode ser outro StmIf (no caso de ELSE IF), um Bloco (no caso de ELSE) ou None
+class IfNoElse(Ifr):
+    def __init__(self, exp, stmts):
+        self.exp = exp
+        self.stmts = stmts
 
     def accept(self, visitor):
-        return visitor.visitStmIf(self)
+        return visitor.visitIfNoElse(self)
+    
+class IfElse(Ifr):
+    def __init__(self, exp, stmts, stmtselse):
+        self.exp = exp
+        self.stmtsif = stmts
+        self.stmtselse = stmtselse
 
+    def accept(self, visitor):
+        return visitor.visitIfElse(self)
+    
+class IfElseIf(Ifr):
+    def __init__(self, exp, stmts, ifr):
+        self.exp = exp
+        self.stmtsif = stmts
+        self.ifr = ifr
 
-#DECLARACOES    
-class DeclLet:
-    def __init__(self, id, type_decl, exp):
-        self.id = id                # String com o nome da variável
-        self.type_decl = type_decl  # String com o tipo (ex: 'int') ou None se for omitido
-        self.exp = exp              # Objeto de expressão do valor inicial
+    def accept(self, visitor):
+        return visitor.visitIfElseIf(self)
+    
+#DECLARACOES
+    
+class DeclLet(Decl):
+    def __init__(self, id, typedecl, exp):
+        self.id = id
+        self.typedecl = typedecl
+        self.exp = exp
 
     def accept(self, visitor):
         return visitor.visitDeclLet(self)
-
-
-class DeclMut:
-    def __init__(self, id, type_decl, exp):
-        self.id = id                # String com o nome da variável mutável
-        self.type_decl = type_decl  # String com o tipo ou None
-        self.exp = exp              # Objeto de expressão do valor inicial
+    
+class DeclMut(Decl):
+    def __init__(self, id, typedecl, exp):
+        self.id = id
+        self.typedecl = typedecl
+        self.exp = exp
 
     def accept(self, visitor):
         return visitor.visitDeclMut(self)
-
-
-class DeclCons:
-    def __init__(self, id, type_str, num_value):
-        self.id = id                # String com o nome da constante
-        self.type_str = type_str    # String com o tipo da constante
-        self.num_value = num_value  # Valor numérico direto da constante
+    
+class DeclCons(Decl):
+    def __init__(self, id, type, exp):
+        self.id = id
+        self.type = type
+        self.exp = exp
 
     def accept(self, visitor):
-        return visitor.visitDeclCons(self)
-
-
-class DeclExp:
+        return visitor.visitDeclConst(self)
+    
+class DeclExp(Decl):
     def __init__(self, id, exp):
-        self.id = id                # String com o nome da variável sendo reatribuída
-        self.exp = exp              # Objeto de expressão com o novo valor
+        self.id = id
+        self.exp = exp
 
     def accept(self, visitor):
         return visitor.visitDeclExp(self)
-
-
-#EXPRESSOES
-class ExpBinOp:
-    def __init__(self, op, left, right):
-        self.op = op                  # String do operador (e.g., '+', '-', '==')
-        self.left = left              # Objeto de expressão à esquerda
-        self.right = right            # Objeto de expressão à direita
+    
+class TypeDeclConcrete(TypeDecl):
+    def __init__(self, type):
+        self.type = type
 
     def accept(self, visitor):
-        return visitor.visitExpBinOp(self)
-
-
-class ExpAttrib:
-    def __init__(self, id, expr):
-        self.id = id                  # String com o nome da variável
-        self.expr = expr              # Objeto de expressão com o valor atribuído
-
-    def accept(self, visitor):
-        return visitor.visitExpAttrib(self)
-
-
-class ExpCompound:
-    def __init__(self, stmts):
-        self.stmts = stmts            # Lista em Python com os comandos do bloco
-
-    def accept(self, visitor):
-        return visitor.visitExpCompound(self)
-
-
-class ExpUnaryNot:
-    def __init__(self, expr):
-        self.expr = expr              # Objeto de expressão que será negado
-
-    def accept(self, visitor):
-        return visitor.visitExpUnaryNot(self)
-
-
-class ExpUnaryMinus:
-    def __init__(self, expr):
-        self.expr = expr              # Objeto de expressão que terá o sinal invertido
-
-    def accept(self, visitor):
-        return visitor.visitExpUnaryMinus(self)
-
-
-class ExpBlockExpr:
-    def __init__(self, stmts, expr):
-        self.stmts = stmts            # Lista de comandos executados antes
-        self.expr = expr              # A expressão final que define o valor de retorno do bloco
-
-    def accept(self, visitor):
-        return visitor.visitExpBlockExpr(self)
-
-
-class ExpBlockStmts:
-    def __init__(self, stmts):
-        self.stmts = stmts            # Lista de comandos do bloco
-
-    def accept(self, visitor):
-        return visitor.visitExpBlockStmts(self)
-
-
-class ExpCall:
-    def __init__(self, id, args):
-        self.id = id                  # String com o nome da função chamada
-        self.args = args              # Lista em Python com os argumentos passados
-
-    def accept(self, visitor):
-        return visitor.visitExpCall(self)
-
-
-class ExpNumber:
-    def __init__(self, value):
-        self.value = value            # Valor numérico literal (int/float)
-
-    def accept(self, visitor):
-        return visitor.visitExpNumber(self)
-
-
-class ExpBoolean:
-    def __init__(self, value):
-        self.value = value            # Booleano literal do Python (True ou False)
-
-    def accept(self, visitor):
-        return visitor.visitExpBoolean(self)
-
-#CHAMADA DE FUNÇÃO
-
-class ExpId:
-    def __init__(self, id):
-        self.id = id                  # String com o nome do identificador (variável)
-
-    def accept(self, visitor):
-        return visitor.visitExpId(self)
-
-class ExpCall:
-    def __init__(self, id, args):
-        self.id = id        # String com o nome da função que está sendo chamada
-        self.args = args    # Lista puramente em Python com os argumentos (IDs das variáveis)
-
-    def accept(self, visitor):
-        return visitor.visitExpCall(self)
-
-
-
-
+        return visitor.visitTypeDeclConcrete(self) 
+    
