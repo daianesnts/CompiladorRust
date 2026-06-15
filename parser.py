@@ -231,10 +231,23 @@ def p_exp_assign_divideattrib(p):
     '''exp_assign : ID DIVIDEATTRIB exp_assign'''
     p[0] = ('exp_assign', p[1], p[3])
     
-def p_exp_or(p):
+def p_exp_assign_or(p):
     '''exp_assign : exp_or'''
     p[0] = p[1]
-    
+
+
+def p_exp_or_logor(p):
+    '''exp_or : exp_or LOGOR exp_and'''
+    p[0] = ('exp_or', p[1], p[3])
+
+def p_exp_or_and(p):
+    '''exp_or : exp_and'''
+    p[0] = p[1]
+
+def p_exp_and_logand(p):
+    '''exp_and: exp_and LOGAND exp_rel'''
+    p[0] = ('exp_and', p[1], p[3])
+#Correção ate aqui
 def p_exp_attrib(p):
    '''attrib : ID EQUALS expr'''
    p[0] = ('attrib', p[1],p[3])
