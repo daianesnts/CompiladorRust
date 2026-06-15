@@ -207,17 +207,34 @@ def p_typedecl_empty(p):
     p[0] = None
  
 #EXPRESSOES
-def p_exp_binop(p):
-   '''expr : expr PLUS  expr
-   | expr MINUS expr
-   | expr TIMES expr
-   | expr DIVIDE expr
-   | expr EQUALS expr
-   | expr NEQUALS expr
-   | expr LESS expr
-   | expr GRTR expr'''
-   p[0] = ('binop', p[2], p[1], p[3])
- 
+def p_exp_assign(p):
+    '''exp : exp_assign'''
+    p[0] = [p[1]]
+    
+def p_exp_assign_equals(p):
+    '''exp_assign : ID EQUALS exp_assign'''
+    p[0] = ('exp_assign', p[1], p[3])
+
+def p_exp_assign_plusattrib(p):
+    '''exp_assign : ID PLUSATTRIB exp_assign'''
+    p[0] = ('exp_assign', p[1], p[3])
+    
+def p_exp_assign_minusattrib(p):
+    '''exp_assign : ID MINUSATTRIB exp_assign'''
+    p[0] = ('exp_assign', p[1], p[3])
+
+def p_exp_assign_timesattrib(p):
+    '''exp_assign : ID TIMESATTRIB exp_assign'''
+    p[0] = ('exp_assign', p[1], p[3]) 
+
+def p_exp_assign_divideattrib(p):
+    '''exp_assign : ID DIVIDEATTRIB exp_assign'''
+    p[0] = ('exp_assign', p[1], p[3])
+    
+def p_exp_or(p):
+    '''exp_assign : exp_or'''
+    p[0] = p[1]
+    
 def p_exp_attrib(p):
    '''attrib : ID EQUALS expr'''
    p[0] = ('attrib', p[1],p[3])
