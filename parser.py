@@ -125,9 +125,7 @@ def p_stmts_multi(p):
    p[0] = p[1] + [p[2]]
 
 def p_stm_decl(p):
-   '''stmt : attrib
-            | ifr
-            | expr SCOLON'''
+   '''stmt : decl'''
    p[0] = p[1]
  
 def p_stm_exp(p):
@@ -139,11 +137,11 @@ def p_stm_ifr(p):
    p[0] = p[1]
  
 def p_stm_loop(p):
-   '''stmt : LOOP expr'''
+   '''stmt : LOOP LBRACE expr RBRACE'''
    p[0] = ('loop', p[2])
  
 def p_stm_while(p):
-   '''stmt : WHILE expr expr'''
+   '''stmt : WHILE expr LBRACE stmts RBRACE'''
    p[0] = ('while',p[2],p[3])
  
 def p_stm_return(p):
@@ -160,15 +158,15 @@ def p_stm_continue(p):
 
 #IFELSE
 def p_ifr_no_else(p):
-   '''ifr : IF expr block'''
+   '''ifr : IF expr LBRACE stmts RBRACE'''
    p[0] = ('if', p[2], p[3], None)
     
 def p_ifr_else(p):
-   '''ifr : IF expr block ELSE block'''
+   '''ifr : IF expr LBRACE stmts RBRACE ELSE LBRACE stmts RBRACE'''
    p[0] = ('if', p[2], p[3], 'else', p[5])
  
 def p_ifr_elseif(p):
-    '''ifr : IF expr block ELSE ifr'''
+    '''ifr : IF expr LBRACE stmts RBRACE ELSE ifr'''
     p[0] = ('if', p[2], p[3], 'else', p[5])
  
 #DECLARACOES
