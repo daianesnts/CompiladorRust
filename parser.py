@@ -170,8 +170,17 @@ def p_ifr_elseif(p):
     p[0] = ('if', p[2], p[3], 'else', p[5])
  
 #DECLARACOES
-def p_decl(p):
-    '''decl : decllet | declmut | declcons | declexp'''
+def p_decllet(p):
+    '''decl : decllet'''
+    p[0] = p[1]
+def p_declmut(p):
+    '''decl : declmut'''
+    p[0] = p[1]
+def p_declcons(p):
+    '''decl : declcons'''
+    p[0] = p[1]
+def p_declexp(p):
+    '''decl : declexp'''
     p[0] = p[1]
 def p_decl_let(p):
     '''decllet : LET ID typedecl EQUALS exp SEMICOLON'''
