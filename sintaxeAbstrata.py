@@ -1,5 +1,6 @@
 from sintaxeAbstrataABC import *
 
+
 #PROGRAMA
 class ProgramTopDecl(Program):
     def __init__(self, topdecl):
@@ -37,6 +38,7 @@ class TopDeclTraitDecl(TopDecl):
     def accept(self, visitor):
         return visitor.visitTopDeclTraitDecl(self)
 
+
 #FUNCOES
 class FuncDeclSignatureBody(FuncDecl):
     def __init__(self, signature, body):
@@ -47,7 +49,7 @@ class FuncDeclSignatureBody(FuncDecl):
         return visitor.visitFuncDeclSignatureBody(self)
     
 class SignatureFunc(Signature):
-    def ___init___(self, id, signaturei):
+    def __init__(self, id, signaturei):
         self.id = id
         self.signaturei = signaturei
 
@@ -126,6 +128,7 @@ class BodyConcrete(Body):
 
     def accept(self, visitor):
         return visitor.visitBodyConcrete(self)
+
 
 #STRUCT E TRAIT  
 class StructDeclConcrete(StructDecl):
@@ -283,8 +286,8 @@ class IfElseIf(Ifr):
     def accept(self, visitor):
         return visitor.visitIfElseIf(self)
     
+
 #DECLARACOES
-    
 class DeclLet(Decl):
     def __init__(self, id, typedecl, exp):
         self.id = id
@@ -327,3 +330,293 @@ class TypeDeclConcrete(TypeDecl):
     def accept(self, visitor):
         return visitor.visitTypeDeclConcrete(self) 
     
+
+#EXPRESSOES
+class ExpAssign(Exp):
+    def __init__(self, exp_assign):
+        self.exp_assign = exp_assign
+
+    def accept(self, visitor):
+        return visitor.visitExpAssign(self)
+    
+class ExpAtrib(ExpAssign):
+    def __init__(self, id, exp):
+        self.id = id
+        self.exp = exp
+
+    def accept(self, visitor):
+        return visitor.visitExpAtrib(self)
+    
+class ExpAtribuiSoma(ExpAssign):
+    def __init__(self, id, exp):
+        self.id = id
+        self.exp = exp
+
+    def accept(self, visitor):
+        return visitor.visitExpAtribuiSoma(self)
+    
+class ExpAtribuiSubtracao(ExpAssign):
+    def __init__(self, id, exp):
+        self.id = id
+        self.exp = exp
+
+    def accept(self, visitor):
+        return visitor.visitExpAtribuiSubtracao(self)
+    
+class ExpAtribuiMultiplicacao(ExpAssign):
+    def __init__(self, id, exp):
+        self.id = id
+        self.exp = exp
+
+    def accept(self, visitor):
+        return visitor.visitExpAtribuiMultiplicacao(self)  
+
+class ExpAtribuiDivisao(ExpAssign):
+    def __init__(self, id, exp):
+        self.id = id
+        self.exp = exp
+
+    def accept(self, visitor):
+        return visitor.visitExpAtribuiDivisao(self) 
+
+class ExpExpOU(ExpAssign):
+    def __init__(self, exp_or):
+        self.exp_or = exp_or
+
+    def accept(self, visitor):
+        return visitor.visitExpOU(self)
+    
+class ExpOU(ExpOr):
+    def __init__(self, exp_or, exp_and):
+        self.exp_or = exp_or
+        self.exp_and = exp_and
+
+    def accept(self, visitor):
+        return visitor.visitExpOU(self)
+    
+class ExpExpE(ExpOr):
+    def __init__(self, exp_and):
+        self.exp_and = exp_and
+
+    def accept(self, visitor):
+        return visitor.visitExpE(self)
+    
+class ExpE(ExpAnd):
+    def __init__(self, exp_and, exp_rel):
+        self.exp_and = exp_and
+        self.exp_eq = exp_rel
+
+    def accept(self, visitor):
+        return visitor.visitExpE(self)
+    
+class ExpExpRel(ExpAnd):
+    def __init__(self, exp_rel):
+        self.exp_rel = exp_rel
+
+    def accept(self, visitor):
+        return visitor.visitExpExpRel(self)
+
+class ExpRel(ExpRel):
+    def __init__(self, exp_bitor, op, exp_bitor2):
+        self.exp_bitor = exp_bitor
+        self.op = op
+        self.exp_bitor2 = exp_bitor2
+
+    def accept(self, visitor):
+        return visitor.visitExpRel(self)
+    
+class ExpExpBitor(ExpRel):
+    def __init__(self, exp_bitor):
+        self.exp_bitor = exp_bitor
+
+    def accept(self, visitor):
+        return visitor.visitExpExpBitor(self)
+
+class ExpBitOr(ExpBitOr):
+    def __init__(self, exp_bitor, exp_bitxor):
+        self.exp_bitor = exp_bitor
+        self.exp_bitxor = exp_bitxor
+
+    def accept(self, visitor):
+        return visitor.visitExpBitOr(self)
+
+class ExpExpBitXor(ExpBitOr):
+    def __init__(self, exp_bitxor):
+        self.exp_bitxor = exp_bitxor
+
+    def accept(self, visitor):
+        return visitor.visitExpExpBitXor(self)
+    
+class ExpBitXor(ExpBitXor):
+    def __init__(self, exp_bitxor, exp_bitand):
+        self.exp_bitxor = exp_bitxor
+        self.exp_bitand = exp_bitand
+
+    def accept(self, visitor):
+        return visitor.visitExpBitXor(self)
+
+class ExpExpBitAnd(ExpBitXor):
+    def __init__(self, exp_bitand):
+        self.exp_bitand = exp_bitand
+
+    def accept(self, visitor):
+        return visitor.visitExpExpBitAnd(self)
+
+class ExpBitAnd(ExpBitAnd):
+    def __init__(self, exp_bitand, exp_shift):
+        self.exp_bitand = exp_bitand
+        self.exp_shift = exp_shift
+
+    def accept(self, visitor):
+        return visitor.visitExpBitAnd(self)
+
+class ExpExpShift(ExpBitAnd):
+    def __init__(self, exp_shift):
+        self.exp_shift = exp_shift
+
+    def accept(self, visitor):
+        return visitor.visitExpExpShift(self)
+
+class ExpShift(ExpShift):
+    def __init__(self, exp_shift, op, exp_add):
+        self.exp_shift = exp_shift
+        self.op = op
+        self.exp_add = exp_add
+
+    def accept(self, visitor):
+        return visitor.visitExpShift(self)
+
+class ExpExpAdd(ExpShift):
+    def __init__(self, exp_add):
+        self.exp_add = exp_add
+
+    def accept(self, visitor):
+        return visitor.visitExpExpAdd(self)
+
+class ExpAdd(ExpAdd):
+    def __init__(self, exp_add, op, exp_mul):
+        self.exp_add = exp_add
+        self.op = op
+        self.exp_mul = exp_mul
+
+    def accept(self, visitor):
+        return visitor.visitExpAdd(self)
+
+class ExpExpMul(ExpAdd):
+    def __init__(self, exp_mul):
+        self.exp_mul = exp_mul
+
+    def accept(self, visitor):
+        return visitor.visitExpExpMul(self)
+
+class ExpMul(ExpMul):
+    def __init__(self, exp_mul, op, exp_unary):
+        self.exp_mul = exp_mul
+        self.op = op
+        self.exp_unary = exp_unary
+
+    def accept(self, visitor):
+        return visitor.visitExpMul(self)
+
+class ExpExpUnary(ExpMul):
+    def __init__(self, exp_unary):
+        self.exp_unary = exp_unary
+
+    def accept(self, visitor):
+        return visitor.visitExpExpUnary(self)
+
+class ExpUnaryNot(ExpUnary):
+    def __init__(self, exp_unary):
+        self.exp_unary = exp_unary
+
+    def accept(self, visitor):
+        return visitor.visitExpUnaryNot(self)
+
+class ExpUnaryNeg(ExpUnary):
+    def __init__(self, exp_unary):
+        self.exp_unary = exp_unary
+
+    def accept(self, visitor):
+        return visitor.visitExpUnaryNeg(self)
+
+class ExpPrimary(ExpUnary):
+    def __init__(self, exp_primary):
+        self.exp_primary = exp_primary
+
+    def accept(self, visitor):
+        return visitor.visitExpPrimary(self)
+
+class ExpPrimaryNum(ExpPrimary):
+    def __init__(self, value):
+        self.value = value
+
+    def accept(self, visitor):
+        return visitor.visitExpPrimaryNum(self)
+
+class ExpPrimaryId(ExpPrimary):
+    def __init__(self, id):
+        self.id = id
+
+    def accept(self, visitor):
+        return visitor.visitExpPrimaryId(self)
+
+class ExpPrimaryBool(ExpPrimary):
+    def __init__(self, value):
+        self.value = value
+
+    def accept(self, visitor):
+        return visitor.visitExpPrimaryBool(self)
+
+class ExpPrimaryParen(ExpPrimary):
+    def __init__(self, exp):
+        self.exp = exp
+
+    def accept(self, visitor):
+        return visitor.visitExpPrimaryParen(self)
+
+class ExpPrimaryBlocoExp(ExpPrimary):
+    def __init__(self, stmts, exp):
+        self.stmts = stmts
+        self.exp = exp
+
+    def accept(self, visitor):
+        return visitor.visitExpPrimaryBlocoExp(self)
+
+class ExpPrimaryBloco(ExpPrimary):
+    def __init__(self, stmts):
+        self.stmts = stmts
+
+    def accept(self, visitor):
+        return visitor.visitExpPrimaryBloco(self)
+    
+    
+#CHAMADAS DE FUNÇÃO
+class CallFuncParams(Call):
+    def __init__(self, id, params):
+        self.id = id
+        self.params = params 
+
+    def accept(self, visitor):
+        return visitor.visitCallFunc(self)
+    
+class CallFunc(Call):
+    def __init__(self, id):
+        self.id = id
+
+    def accept(self, visitor):
+        return visitor.visitCallFunc(self)
+
+class ParamExpParams(Param):
+    def __init__(self, exp, params):
+        self.exp = exp
+        self.params = params
+
+    def accept(self, visitor):
+        return visitor.visitParamExpParams(self)
+    
+class ParamExp(Param):
+    def __init__(self, exp):
+        self.exp = exp
+
+    def accept(self, visitor):
+        return visitor.visitParamExp(self)
