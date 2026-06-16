@@ -74,167 +74,165 @@ def p_body(p):
     p[0] = ('body', p[2])
 
 
-#STRUCT E TRAIT 
+#STRUCT E TRAIT
 def p_structdecl(p):
     '''structdecl : STRUCT ID LBRACE structfields RBRACE'''
     p[0] = ('structdecl', p[2], p[4])
-
 
 def p_structfields_empty(p):
     '''structfields : empty'''
     p[0] = []
 
-
 def p_structfields_single(p):
     '''structfields : structfield'''
     p[0] = [p[1]]
-
 
 def p_structfields_multi(p):
     '''structfields : structfield COMMA structfields'''
     p[0] = [p[1]] + p[3]
 
-
 def p_structfield(p):
     '''structfield : ID COLON TYPE'''
     p[0] = ('structfield', p[1], p[3])
-
 
 def p_traitdecl(p):
     '''traitdecl : TRAIT ID LBRACE traitbody RBRACE'''
     p[0] = ('traitdecl', p[2], p[4])
 
-
 def p_traitbody_empty(p):
     '''traitbody : empty'''
-    p[0] = None
-
+    p[0] = []
 
 def p_traitbody(p):
-    '''traitbody : signature SEMICOLON traitbody'''
-    p[0] = [p[1]] + p[3]  
+    '''traitbody : signature SCOLON traitbody'''
+    p[0] = [p[1]] + p[3]
 
 
-#COMANDOS 
+#COMANDOS
 def p_stmts_single(p):
-   '''stmts : stmt'''
-   p[0] = [p[1]]
+    '''stmts : stmt'''
+    p[0] = [p[1]]
 
 def p_stmts_multi(p):
-   '''stmts : stmts stmt'''
-   p[0] = p[1] + [p[2]]
+    '''stmts : stmts stmt'''
+    p[0] = p[1] + [p[2]]
 
 def p_stm_decl(p):
-   '''stmt : decl'''
-   p[0] = p[1]
- 
+    '''stmt : decl'''
+    p[0] = p[1]
+
 def p_stm_exp(p):
-   '''stmt : expr SCOLON'''
-   p[0] = ('exp', p[1])
- 
+    '''stmt : exp SCOLON'''
+    p[0] = ('exp', p[1])
+
 def p_stm_ifr(p):
-   '''stmt : ifr'''
-   p[0] = p[1]
- 
+    '''stmt : ifr'''
+    p[0] = p[1]
+
 def p_stm_loop(p):
-   '''stmt : LOOP LBRACE expr RBRACE'''
-   p[0] = ('loop', p[2])
- 
+    '''stmt : LOOP LBRACE stmts RBRACE'''
+    p[0] = ('loop', p[3])
+
 def p_stm_while(p):
-   '''stmt : WHILE expr LBRACE stmts RBRACE'''
-   p[0] = ('while',p[2],p[3])
- 
+    '''stmt : WHILE exp LBRACE stmts RBRACE'''
+    p[0] = ('while', p[2], p[4])
+
 def p_stm_return(p):
-   '''stmt : RETURN expr SCOLON'''
-   p[0] = ('return', p[2])
- 
+    '''stmt : RETURN exp SCOLON'''
+    p[0] = ('return', p[2])
+
 def p_stm_break(p):
-   '''stmt : BREAK SCOLON'''
-   p[0] = ('break',)
+    '''stmt : BREAK SCOLON'''
+    p[0] = ('break',)
 
 def p_stm_continue(p):
-   '''stmt : CONTINUE SCOLON'''
-   p[0] = ('continue',)
+    '''stmt : CONTINUE SCOLON'''
+    p[0] = ('continue',)
 
-#IFELSE
+#IF ELSE
 def p_ifr_no_else(p):
-   '''ifr : IF expr LBRACE stmts RBRACE'''
-   p[0] = ('if', p[2], p[3], None)
-    
+    '''ifr : IF exp LBRACE stmts RBRACE'''
+    p[0] = ('if', p[2], p[4], None)
+
 def p_ifr_else(p):
-   '''ifr : IF expr LBRACE stmts RBRACE ELSE LBRACE stmts RBRACE'''
-   p[0] = ('if', p[2], p[3], 'else', p[5])
- 
+    '''ifr : IF exp LBRACE stmts RBRACE ELSE LBRACE stmts RBRACE'''
+    p[0] = ('if', p[2], p[4], 'else', p[8])
+
 def p_ifr_elseif(p):
-    '''ifr : IF expr LBRACE stmts RBRACE ELSE ifr'''
-    p[0] = ('if', p[2], p[3], 'else', p[5])
- 
-#DECLARACOES
+    '''ifr : IF exp LBRACE stmts RBRACE ELSE ifr'''
+    p[0] = ('if', p[2], p[4], 'else', p[7])
+
+
+#DECLARAÇÕES
 def p_decllet(p):
     '''decl : decllet'''
     p[0] = p[1]
+
 def p_declmut(p):
     '''decl : declmut'''
     p[0] = p[1]
+
 def p_declcons(p):
     '''decl : declcons'''
     p[0] = p[1]
+
 def p_declexp(p):
     '''decl : declexp'''
     p[0] = p[1]
+
 def p_decl_let(p):
-    '''decllet : LET ID typedecl EQUALS exp SEMICOLON'''
+    '''decllet : LET ID typedecl ATTRIB exp SCOLON'''
     p[0] = ('decllet', p[2], p[3], p[5])
- 
+
 def p_decl_mut(p):
-    '''declmut : LET MUT ID typedecl EQUALS exp SEMICOLON'''
-    p[0] = ('declmut', p[3], p[4],p[6])
- 
+    '''declmut : LET MUT ID typedecl ATTRIB exp SCOLON'''
+    p[0] = ('declmut', p[3], p[4], p[6])
+
 def p_decl_const(p):
-    '''declcons : CONST ID EQUALS TYPE EQUALS NUM SEMICOLON'''
-    p[0] = ('declcons', p[2],p[4], p[6])
+    '''declcons : CONST ID COLON TYPE ATTRIB NUMBER SCOLON'''
+    p[0] = ('declcons', p[2], p[4], p[6])
 
 def p_decl_exp(p):
-    '''declexp : ID EQUALS exp SEMICOLON'''
+    '''declexp : ID ATTRIB exp SCOLON'''
     p[0] = ('declexp', p[1], p[3])
- 
+
 def p_typedecl_typed(p):
     '''typedecl : COLON TYPE'''
     p[0] = ('typedecl', p[2])
-    
+
 def p_typedecl_empty(p):
     '''typedecl : empty'''
     p[0] = None
- 
-#EXPRESSOES
-def p_exp_assign(p):
+
+
+#EXPRESSÕES
+def p_exp(p):
     '''exp : exp_assign'''
-    p[0] = [p[1]]
-    
+    p[0] = p[1]
+
 def p_exp_assign_equals(p):
-    '''exp_assign : ID EQUALS exp_assign'''
+    '''exp_assign : ID ATTRIB exp_assign'''
     p[0] = ('exp_assign', p[1], p[3])
 
 def p_exp_assign_plusattrib(p):
     '''exp_assign : ID PLUSATTRIB exp_assign'''
     p[0] = ('exp_assign', p[1], p[3])
-    
+
 def p_exp_assign_minusattrib(p):
     '''exp_assign : ID MINUSATTRIB exp_assign'''
     p[0] = ('exp_assign', p[1], p[3])
 
 def p_exp_assign_timesattrib(p):
     '''exp_assign : ID TIMESATTRIB exp_assign'''
-    p[0] = ('exp_assign', p[1], p[3]) 
+    p[0] = ('exp_assign', p[1], p[3])
 
 def p_exp_assign_divideattrib(p):
     '''exp_assign : ID DIVIDEATTRIB exp_assign'''
     p[0] = ('exp_assign', p[1], p[3])
-    
+
 def p_exp_assign_or(p):
     '''exp_assign : exp_or'''
     p[0] = p[1]
-
 
 def p_exp_or_logor(p):
     '''exp_or : exp_or LOGOR exp_and'''
@@ -245,80 +243,181 @@ def p_exp_or_and(p):
     p[0] = p[1]
 
 def p_exp_and_logand(p):
-    '''exp_and: exp_and LOGAND exp_rel'''
+    '''exp_and : exp_and LOGAND exp_rel'''
     p[0] = ('exp_and', p[1], p[3])
-#Correção ate aqui
-def p_exp_attrib(p):
-   '''attrib : ID EQUALS expr'''
-   p[0] = ('attrib', p[1],p[3])
- 
-def p_exp_compound(p):
-   '''compound : LBRACE stmts RBRACE'''
-   p[0] = ('compound', p[2])
- 
+
+def p_exp_and_rel(p):
+    '''exp_and : exp_rel'''
+    p[0] = p[1]
+
+def p_exp_rel_equals(p):
+    '''exp_rel : exp_bitor EQUALS exp_bitor'''
+    p[0] = ('exp_rel', p[1], p[3])
+
+def p_exp_rel_nequals(p):
+    '''exp_rel : exp_bitor NEQUALS exp_bitor'''
+    p[0] = ('exp_rel', p[1], p[3])
+
+def p_exp_rel_less(p):
+    '''exp_rel : exp_bitor LESS exp_bitor'''
+    p[0] = ('exp_rel', p[1], p[3])
+
+def p_exp_rel_grtr(p):
+    '''exp_rel : exp_bitor GRTR exp_bitor'''
+    p[0] = ('exp_rel', p[1], p[3])
+
+def p_exp_rel_lesseq(p):
+    '''exp_rel : exp_bitor LESSEQ exp_bitor'''
+    p[0] = ('exp_rel', p[1], p[3])
+
+def p_exp_rel_grtreq(p):
+    '''exp_rel : exp_bitor GRTREQ exp_bitor'''
+    p[0] = ('exp_rel', p[1], p[3])
+
+def p_exp_rel_bitor(p):
+    '''exp_rel : exp_bitor'''
+    p[0] = p[1]
+
+def p_exp_bitor_or(p):
+    '''exp_bitor : exp_bitor BITOR exp_bitxor'''
+    p[0] = ('exp_bitor', p[1], p[3])
+
+def p_exp_bitor_bitxor(p):
+    '''exp_bitor : exp_bitxor'''
+    p[0] = p[1]
+
+def p_exp_bitxor_xor(p):
+    '''exp_bitxor : exp_bitxor BITXOR exp_bitand'''
+    p[0] = ('exp_bitxor', p[1], p[3])
+
+def p_exp_bitxor_bitand(p):
+    '''exp_bitxor : exp_bitand'''
+    p[0] = p[1]
+
+def p_exp_bitand_and(p):
+    '''exp_bitand : exp_bitand BITAND exp_shift'''
+    p[0] = ('exp_bitand', p[1], p[3])
+
+def p_exp_bitand_shift(p):
+    '''exp_bitand : exp_shift'''
+    p[0] = p[1]
+
+def p_exp_shift_lshift(p):
+    '''exp_shift : exp_shift LSHIFT exp_add'''
+    p[0] = ('exp_shift', p[1], p[3])
+
+def p_exp_shift_rshift(p):
+    '''exp_shift : exp_shift RSHIFT exp_add'''
+    p[0] = ('exp_shift', p[1], p[3])
+
+def p_exp_shift_add(p):
+    '''exp_shift : exp_add'''
+    p[0] = p[1]
+
+def p_exp_add_plus(p):
+    '''exp_add : exp_add PLUS exp_mul'''
+    p[0] = ('exp_add', p[1], p[3])
+
+def p_exp_add_minus(p):
+    '''exp_add : exp_add MINUS exp_mul'''
+    p[0] = ('exp_add', p[1], p[3])
+
+def p_exp_add_mul(p):
+    '''exp_add : exp_mul'''
+    p[0] = p[1]
+
+def p_exp_mul_times(p):
+    '''exp_mul : exp_mul TIMES exp_unary'''
+    p[0] = ('exp_mul', p[1], p[3])
+
+def p_exp_mul_divide(p):
+    '''exp_mul : exp_mul DIVIDE exp_unary'''
+    p[0] = ('exp_mul', p[1], p[3])
+
+def p_exp_mul_modl(p):
+    '''exp_mul : exp_mul MODL exp_unary'''
+    p[0] = ('exp_mul', p[1], p[3])
+
+def p_exp_mul_unary(p):
+    '''exp_mul : exp_unary'''
+    p[0] = p[1]
+
 def p_exp_unary_not(p):
-   '''expr : LOGNOT expr'''
-   p[0] = ('unary not', p[2])
- 
-def p_exp_unary_minus(p):
-   '''expr : MINUS expr'''
-   p[0] = ('unary minus', p[2])
- 
-def p_exp_paren(p):
-   '''expr : LPAREN expr RPAREN'''
-   p[0] = ('exp paren', p[2])
- 
-def p_exp_block_expr(p):
-   '''expr : LBRACE stmts expr RBRACE'''
-   p[0] = ('block expr', p[2], p[3])
- 
-def p_exp_block_stmts(p):
-   '''expr : LBRACE stmts RBRACE'''
-   p[0] = ('block stmts', p[2])
+    '''exp_unary : LOGNOT exp_unary'''
+    p[0] = ('exp_unary_not', p[2])
 
-def p_exp_call(p):
-   '''expr : ID LPAREN args RPAREN'''
-   p[0] = ('exp call', p[1], p[3])
- 
-def p_exp_number(p):
-   '''expr : NUMBER'''
-   p[0] = ('number', p[1])
- 
-def p_exp_true(p):
-   '''expr : TRUE'''
-   p[0] = ('boolean', True)
- 
-def p_exp_false(p):
-   '''expr : FALSE'''
-   p[0] = ('boolean', False)    
- 
-def p_exp_id(p):
-   '''expr : ID'''
-   p[0] = ('id', p[1])
+def p_exp_unary_neg(p):
+    '''exp_unary : MINUS exp_unary'''
+    p[0] = ('exp_unary_neg', p[2])
 
-#CHAMADA DE FUNÇÃO
+def p_exp_unary_primary(p):
+    '''exp_unary : exp_primary'''
+    p[0] = p[1]
+
+def p_exp_primary_call(p):
+    '''exp_primary : call'''
+    p[0] = p[1]
+
+def p_exp_primary_num(p):
+    '''exp_primary : NUMBER'''
+    p[0] = ('num', p[1])
+
+def p_exp_primary_id(p):
+    '''exp_primary : ID'''
+    p[0] = ('id', p[1])
+
+def p_exp_primary_true(p):
+    '''exp_primary : TRUE'''
+    p[0] = ('bool', True)
+
+def p_exp_primary_false(p):
+    '''exp_primary : FALSE'''
+    p[0] = ('bool', False)
+
+def p_exp_primary_paren(p):
+    '''exp_primary : LPAREN exp RPAREN'''
+    p[0] = p[2]
+
+def p_exp_primary_block_exp(p):
+    '''exp_primary : LBRACE stmts exp RBRACE'''
+    p[0] = ('block', p[2], p[3])
+
+def p_exp_primary_block(p):
+    '''exp_primary : LBRACE stmts RBRACE'''
+    p[0] = ('block', p[2], None)
+
+
+#CHAMADAS DE FUNÇÃO
 def p_call_with_params(p):
-   '''expr : ID LPAREN args RPAREN'''
-   p[0] = ('call with params',p[1],p[3])
- 
-def p_call_no_params(p):
-   '''expr : ID LPAREN RPAREN'''
-   p[0] = ('call no params', p[1])
- 
-def p_params_single(p):
-   '''args : ID'''
-   p[0] = [p[1]]
- 
-def p_params_multi(p):
-   '''args : args COMMA ID'''
-   p[0] = p[1] + [p[3]]
+    '''call : ID LPAREN args RPAREN'''
+    p[0] = ('call', p[1], p[3])
 
+def p_call_no_params(p):
+    '''call : ID LPAREN RPAREN'''
+    p[0] = ('call', p[1])
+
+def p_args_single(p):
+    '''args : exp'''
+    p[0] = [p[1]]
+
+def p_args_multi(p):
+    '''args : exp COMMA args'''
+    p[0] = [p[1]] + p[3]
+
+def p_empty(p):
+    '''empty :'''
+    p[0] = None
 
 def p_error(p):
-   if p:
-    print(f"Illegal character {p.value[0]}")
-   else:
-      print("Syntax error: unexpected end of file")
+    if p:
+        print(f"Syntax error at '{p.value}', line {p.lineno}")
+    else:
+        print("Syntax error: unexpected end of file")
+
+
+tokens = lexer.tokens
+
+parser = yacc.yacc()
 
 def main():
  
