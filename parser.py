@@ -79,10 +79,6 @@ def p_structdecl(p):
     '''structdecl : STRUCT ID LBRACE structfields RBRACE'''
     p[0] = ('structdecl', p[2], p[4])
 
-def p_structfields_empty(p):
-    '''structfields : empty'''
-    p[0] = []
-
 def p_structfields_single(p):
     '''structfields : structfield'''
     p[0] = [p[1]]
@@ -99,11 +95,11 @@ def p_traitdecl(p):
     '''traitdecl : TRAIT ID LBRACE traitbody RBRACE'''
     p[0] = ('traitdecl', p[2], p[4])
 
-def p_traitbody_empty(p):
-    '''traitbody : empty'''
+def p_traitbody_single(p):
+    '''traitbody : signature'''
     p[0] = []
 
-def p_traitbody(p):
+def p_traitbody_multi(p):
     '''traitbody : signature SCOLON traitbody'''
     p[0] = [p[1]] + p[3]
 
@@ -114,7 +110,7 @@ def p_stmts_single(p):
     p[0] = [p[1]]
 
 def p_stmts_multi(p):
-    '''stmts : stmts stmt'''
+    '''stmts : stmt stmts'''
     p[0] = p[1] + [p[2]]
 
 def p_stm_decl(p):
@@ -189,7 +185,7 @@ def p_decl_mut(p):
     p[0] = ('declmut', p[3], p[4], p[6])
 
 def p_decl_const(p):
-    '''declcons : CONST ID COLON TYPE ATTRIB NUMBER SCOLON'''
+    '''declcons : CONST ID COLON TYPE ATTRIB exp SCOLON'''
     p[0] = ('declcons', p[2], p[4], p[6])
 
 def p_decl_exp(p):
@@ -199,11 +195,6 @@ def p_decl_exp(p):
 def p_typedecl_typed(p):
     '''typedecl : COLON TYPE'''
     p[0] = ('typedecl', p[2])
-
-def p_typedecl_empty(p):
-    '''typedecl : empty'''
-    p[0] = None
-
 
 #EXPRESSÕES
 def p_exp(p):
@@ -403,10 +394,6 @@ def p_args_single(p):
 def p_args_multi(p):
     '''args : exp COMMA args'''
     p[0] = [p[1]] + p[3]
-
-def p_empty(p):
-    '''empty :'''
-    p[0] = None
 
 def p_error(p):
     if p:
