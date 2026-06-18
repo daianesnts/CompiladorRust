@@ -114,7 +114,7 @@ class SigParamsMulti(SigParams):
     def accept(self, visitor):
         return visitor.visitSigParamsMulti(self)
     
-class SigParam(SigParam):
+class SigParamConcrete(SigParam):
     def __init__(self, id, type):
         self.id = id
         self.type = type
@@ -139,7 +139,7 @@ class StructDeclConcrete(StructDecl):
     def accept(self, visitor):
         return visitor.visitStructDeclConcrete(self)
 
-class StructFieldsField(StructFields):
+class StructFieldsSingle(StructFields):
     def __init__(self, structfield):
         self.structfield = structfield
 
@@ -196,9 +196,9 @@ class StmtsSingle(Stmts):
         return visitor.visitStmtsSingle(self)
 
 class StmtsMulti(Stmts):
-    def __init__(self, stmts, stm):
-        self.stmts = stmts
+    def __init__(self, stm, stmts):
         self.stm = stm
+        self.stmts = stmts
 
     def accept(self, visitor):
         return visitor.visitStmtsMulti(self)
@@ -539,7 +539,7 @@ class ExpUnaryNeg(ExpUnary):
     def accept(self, visitor):
         return visitor.visitExpUnaryNeg(self)
 
-class ExpPrimary(ExpUnary):
+class ExpPrimaryConcrete(ExpUnary):
     def __init__(self, exp_primary):
         self.exp_primary = exp_primary
 
@@ -621,9 +621,16 @@ class ArgsExpArgs(Args):
     def accept(self, visitor):
         return visitor.visitParamExpParams(self)
     
-class ArgExp(Args):
+class ArgsExp(Args):
     def __init__(self, exp):
         self.exp = exp
 
     def accept(self, visitor):
         return visitor.visitParamExp(self)
+
+class TypeID:
+    def __init__(self, type):
+        self.type = type
+    
+    def accept(self, visitor):
+        return visitor.visitTypeID(self)
