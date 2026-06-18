@@ -212,6 +212,9 @@ def t_sgnlncomnt_error(t):
 FIM - ESTADO EXCLUSIVE COMENTÁRIO LINHA ÚNICA
 '''
 
+def create_lexer(dbg=0):
+    return lex.lex(debug=dbg)
+
 def main():
     if len(sys.argv) < 2:
         print("Use: python lexer.py <arquivo_rust.rs>")
