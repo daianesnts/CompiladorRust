@@ -17,9 +17,9 @@ signature → "fn" ID sigaturei
 
 signaturei → signaturep | signaturenp
 
-signaturep → "(" sigparams ")" "->" TYPE | "fn" ID "(" sigparams ")" 
+signaturep → "(" sigparams ")" "->" TYPE | "(" sigparams ")" 
 
-signaturenp → "(" ")" "->" TYPE | "fn" ID "(" ")"
+signaturenp → "(" ")" "->" TYPE | "(" ")"
 
 sigparams → sigparam | sigparam "," sigparams
 
@@ -69,7 +69,7 @@ decllet → "let" ID typedecl "=" exp ";"
 
 declmut → "let" "mut" ID typedecl "=" exp ";"
 
-declcons → "const" ID ":" TYPE "=" NUM ";"
+declcons → "const" ID ":" TYPE "=" exp ";"
 
 declexp → ID "=" exp ";"
 
@@ -128,8 +128,8 @@ exp_primary → call |
 ```
 #CHAMADAS DE FUNÇÃO
       
-call → ID "(" params ")" | ID "(" ")"
+call → ID "(" args ")" | ID "(" ")"
 
-params → exp "," params | exp
+args → exp "," args | exp
 
 ```
