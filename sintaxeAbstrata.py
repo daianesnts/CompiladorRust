@@ -332,7 +332,7 @@ class TypeDeclConcrete(TypeDecl):
     
 
 #EXPRESSOES
-class ExpAssign(Exp):
+class ExpAssignConcrete(Exp):
     def __init__(self, exp_assign):
         self.exp_assign = exp_assign
 
@@ -404,7 +404,7 @@ class ExpExpE(ExpOr):
 class ExpE(ExpAnd):
     def __init__(self, exp_and, exp_rel):
         self.exp_and = exp_and
-        self.exp_eq = exp_rel
+        self.exp_rel = exp_rel
 
     def accept(self, visitor):
         return visitor.visitExpE(self)
@@ -416,7 +416,7 @@ class ExpExpRel(ExpAnd):
     def accept(self, visitor):
         return visitor.visitExpExpRel(self)
 
-class ExpRel(ExpRel):
+class ExpRelConcrete(ExpRel):
     def __init__(self, exp_bitor, op, exp_bitor2):
         self.exp_bitor = exp_bitor
         self.op = op
@@ -432,7 +432,7 @@ class ExpExpBitor(ExpRel):
     def accept(self, visitor):
         return visitor.visitExpExpBitor(self)
 
-class ExpBitOr(ExpBitOr):
+class ExpBitOrConcrete(ExpBitOr):
     def __init__(self, exp_bitor, exp_bitxor):
         self.exp_bitor = exp_bitor
         self.exp_bitxor = exp_bitxor
@@ -447,7 +447,7 @@ class ExpExpBitXor(ExpBitOr):
     def accept(self, visitor):
         return visitor.visitExpExpBitXor(self)
     
-class ExpBitXor(ExpBitXor):
+class ExpBitXorConcrete(ExpBitXor):
     def __init__(self, exp_bitxor, exp_bitand):
         self.exp_bitxor = exp_bitxor
         self.exp_bitand = exp_bitand
@@ -462,7 +462,7 @@ class ExpExpBitAnd(ExpBitXor):
     def accept(self, visitor):
         return visitor.visitExpExpBitAnd(self)
 
-class ExpBitAnd(ExpBitAnd):
+class ExpBitAndConcrete(ExpBitAnd):
     def __init__(self, exp_bitand, exp_shift):
         self.exp_bitand = exp_bitand
         self.exp_shift = exp_shift
@@ -477,7 +477,7 @@ class ExpExpShift(ExpBitAnd):
     def accept(self, visitor):
         return visitor.visitExpExpShift(self)
 
-class ExpShift(ExpShift):
+class ExpShiftConcrete(ExpShift):
     def __init__(self, exp_shift, op, exp_add):
         self.exp_shift = exp_shift
         self.op = op
@@ -493,7 +493,7 @@ class ExpExpAdd(ExpShift):
     def accept(self, visitor):
         return visitor.visitExpExpAdd(self)
 
-class ExpAdd(ExpAdd):
+class ExpAddConcrete(ExpAdd):
     def __init__(self, exp_add, op, exp_mul):
         self.exp_add = exp_add
         self.op = op
@@ -509,7 +509,7 @@ class ExpExpMul(ExpAdd):
     def accept(self, visitor):
         return visitor.visitExpExpMul(self)
 
-class ExpMul(ExpMul):
+class ExpMulConcrete(ExpMul):
     def __init__(self, exp_mul, op, exp_unary):
         self.exp_mul = exp_mul
         self.op = op
@@ -545,6 +545,13 @@ class ExpPrimary(ExpUnary):
 
     def accept(self, visitor):
         return visitor.visitExpPrimary(self)
+
+class ExpPrimaryCall(ExpPrimary):
+    def __init__(self, call):
+        self.call = call
+    
+    def accept(self, visitor):
+        return visitor.visitExpPrimaryCall(self)
 
 class ExpPrimaryNum(ExpPrimary):
     def __init__(self, value):
@@ -591,10 +598,10 @@ class ExpPrimaryBloco(ExpPrimary):
     
     
 #CHAMADAS DE FUNÇÃO
-class CallFuncParams(Call):
-    def __init__(self, id, params):
+class CallFuncArgs(Call):
+    def __init__(self, id, args):
         self.id = id
-        self.params = params 
+        self.args = args 
 
     def accept(self, visitor):
         return visitor.visitCallFunc(self)
@@ -606,15 +613,15 @@ class CallFunc(Call):
     def accept(self, visitor):
         return visitor.visitCallFunc(self)
 
-class ParamExpParams(Param):
-    def __init__(self, exp, params):
+class ArgsExpArgs(Args):
+    def __init__(self, exp, args):
         self.exp = exp
-        self.params = params
+        self.args = args
 
     def accept(self, visitor):
         return visitor.visitParamExpParams(self)
     
-class ParamExp(Param):
+class ArgExp(Args):
     def __init__(self, exp):
         self.exp = exp
 

@@ -172,7 +172,7 @@ class Call(ABC):
     def accept(self, visitor):
         pass
 
-class Param(ABC):
+class Args(ABC):
     @abstractmethod
     def accept(self, visitor):
         pass
