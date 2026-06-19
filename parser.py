@@ -156,7 +156,7 @@ def p_ifr_else(p):
 
 def p_ifr_elseif(p):
     '''ifr : IF exp LBRACE stmts RBRACE ELSE ifr'''
-    p[0] = IfElseIf(p[2], p[4], p[7])
+    p[0] = IfElseIfr(p[2], p[4], p[7])
 
 
 #DECLARAÇÕES

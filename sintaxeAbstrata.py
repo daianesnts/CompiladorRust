@@ -120,7 +120,7 @@ class SigParamConcrete(SigParam):
         self.type = type
 
     def accept(self, visitor):
-        return visitor.visitSigParam(self)
+        return visitor.visitSigParamConcrete(self)
     
 class BodyConcrete(Body):
     def __init__(self, stmts):
@@ -144,7 +144,7 @@ class StructFieldsSingle(StructFields):
         self.structfield = structfield
 
     def accept(self, visitor):
-        return visitor.visitStructFieldsField(self)
+        return visitor.visitStructFieldsSingle(self)
     
 class StructFieldsMulti(StructFields):
     def __init__(self, structfield, structfields):
@@ -277,14 +277,14 @@ class IfElse(Ifr):
     def accept(self, visitor):
         return visitor.visitIfElse(self)
     
-class IfElseIf(Ifr):
+class IfElseIfr(Ifr):
     def __init__(self, exp, stmts, ifr):
         self.exp = exp
         self.stmtsif = stmts
         self.ifr = ifr
 
     def accept(self, visitor):
-        return visitor.visitIfElseIf(self)
+        return visitor.visitIfElseIfr(self)
     
 
 #DECLARACOES
@@ -384,7 +384,7 @@ class ExpExpOU(ExpAssign):
         self.exp_or = exp_or
 
     def accept(self, visitor):
-        return visitor.visitExpOU(self)
+        return visitor.visitExpExpOU(self)
     
 class ExpOU(ExpOr):
     def __init__(self, exp_or, exp_and):
@@ -399,7 +399,7 @@ class ExpExpE(ExpOr):
         self.exp_and = exp_and
 
     def accept(self, visitor):
-        return visitor.visitExpE(self)
+        return visitor.visitExpExpE(self)
     
 class ExpE(ExpAnd):
     def __init__(self, exp_and, exp_rel):
@@ -430,7 +430,7 @@ class ExpExpBitor(ExpRel):
         self.exp_bitor = exp_bitor
 
     def accept(self, visitor):
-        return visitor.visitExpExpBitor(self)
+        return visitor.visitExpExpBitOr(self)
 
 class ExpBitOrConcrete(ExpBitOr):
     def __init__(self, exp_bitor, exp_bitxor):
@@ -604,7 +604,7 @@ class CallFuncArgs(Call):
         self.args = args 
 
     def accept(self, visitor):
-        return visitor.visitCallFunc(self)
+        return visitor.visitCallFuncArgs(self)
     
 class CallFunc(Call):
     def __init__(self, id):
@@ -619,14 +619,14 @@ class ArgsExpArgs(Args):
         self.args = args
 
     def accept(self, visitor):
-        return visitor.visitParamExpParams(self)
+        return visitor.visitArgsExpArgs(self)
     
 class ArgsExp(Args):
     def __init__(self, exp):
         self.exp = exp
 
     def accept(self, visitor):
-        return visitor.visitParamExp(self)
+        return visitor.visitArgsExp(self)
 
 class TypeID:
     def __init__(self, type):
