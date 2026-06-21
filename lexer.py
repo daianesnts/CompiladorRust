@@ -28,7 +28,7 @@ reserved = {
     'pub':      'PUB',
     'ref':      'REF',
     'return':   'RETURN',
-    'Self':     'SELFTYPE',
+    'self':     'SELFTYPE',
     'static':   'STATIC',
     'struct':   'STRUCT',
     'trait':    'TRAIT',
@@ -90,6 +90,7 @@ t_GRTR      = r'>'
 t_LOGNOT    = r'!'      
 t_BITOR     = r'\|'
 t_BITXOR    = r'\^'
+t_BITAND    = r'&'
 
 # Delimitadores
 t_LPAREN    = r'\('
