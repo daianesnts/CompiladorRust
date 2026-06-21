@@ -68,11 +68,11 @@ class VisitorAbstrato(ABC):
         pass
 
     @abstractmethod
-    def visitSigParamConcrete(self, vsp):
+    def visitSigParamConcrete(self, vspc):
         pass
 
     @abstractmethod
-    def visitBodyContent(self, vbc):
+    def visitBodyConcrete(self, vbc):
         pass
 
 #STRUCT E TRAIT
@@ -82,11 +82,11 @@ class VisitorAbstrato(ABC):
         pass
 
     @abstractmethod
-    def visitStructFieldsSingle(self, vsdff):
+    def visitStructFieldsSingle(self, vsfs):
         pass
 
     @abstractmethod
-    def visitStructFieldsMulti(self, vsdfm):
+    def visitStructFieldsMulti(self, vsfm):
         pass
 
     @abstractmethod
@@ -105,6 +105,41 @@ class VisitorAbstrato(ABC):
     def visitTraitBodyMulti(self, vtbm):
         pass
 
+    @abstractmethod
+    def visitTraitSignaturesSignature(self, vtss):
+        pass
+
+    @abstractmethod
+    def visitTraitSignaturesFuncDecl(self, vtsfd):
+        pass
+
+    @abstractmethod
+    def visitTraitSignaturesTraitMethod(self, vtstm):
+        pass
+    
+    @abstractmethod
+    def visitTraitMethodConcrete(self, vtmc):
+        pass
+
+    @abstractmethod
+    def visitTraitSignatureConcrete(self, vtsc):
+        pass
+    
+    @abstractmethod
+    def visitTraitSignaturePSingleP(self, vtspsp):
+        pass
+
+    @abstractmethod
+    def visitTraitSignaturePSinglePV(self, vtspspv):
+        pass
+    
+    @abstractmethod
+    def visitTraitSignaturePMultiP(self, vtspmp):
+        pass
+
+    @abstractmethod
+    def visitTraitSignaturePMultiPV(self, vtspmpv):
+        pass
 #COMANDOS
     @abstractmethod
     def visitStmtsSingle(self, vss):
@@ -172,10 +207,6 @@ class VisitorAbstrato(ABC):
         pass
 
     @abstractmethod
-    def visitDeclExp(self, vde):
-        pass
-
-    @abstractmethod
     def visitTypeDeclConcrete(self, vtdc):
         pass
 
@@ -229,11 +260,11 @@ class VisitorAbstrato(ABC):
         pass
 
     @abstractmethod
-    def visitExpExpBitOr(self, veb):
+    def visitExpExpBitOr(self, vebo):
         pass
 
     @abstractmethod
-    def visitExpBitOr(self, veb):
+    def visitExpBitOr(self, vebo):
         pass
 
     @abstractmethod

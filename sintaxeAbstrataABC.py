@@ -76,6 +76,26 @@ class TraitBody(ABC):
     def accept(self, visitor):
         pass
 
+class TraitSignatures(ABC):
+    @abstractmethod
+    def accept(self, visitor):
+        pass
+
+class TraitMethod(ABC):
+    @abstractmethod
+    def accept(self, visitor):
+        pass
+
+class TraitSignature(ABC):
+    @abstractmethod
+    def accept(self, visitor):
+        pass
+
+class TraitSignatureP(ABC):
+    @abstractmethod
+    def accept(self, visitor):
+        pass 
+
 class Stmts(ABC):
     @abstractmethod
     def accept(self, visitor):

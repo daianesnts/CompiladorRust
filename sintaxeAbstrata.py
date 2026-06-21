@@ -171,21 +171,85 @@ class TraitDeclConcrete(TraitDecl):
         return visitor.visitTraitDeclConcrete(self)
 
 class TraitBodySingle(TraitBody):
-    def __init__(self, signature):
-        self.signature = signature
-        
+    def __init__(self, traitsignatures):
+        self.traitsignatures = traitsignatures
 
     def accept(self, visitor):
         return visitor.visitTraitBodySingle(self)
     
 class TraitBodyMulti(TraitBody):
-    def __init__(self, signature, traitbody):
-        self.signature = signature
+    def __init__(self, traitsignatures, traitbody):
+        self.traitsignatures = traitsignatures
         self.traitbody = traitbody
 
     def accept(self, visitor):
         return visitor.visitTraitBodyMulti(self)
     
+class TraitSignaturesSignature(TraitSignatures):
+    def __init__(self, signature):
+        self.signature = signature
+
+    def accept(self, visitor):
+        return visitor.visitTraitSignaturesSignature(self)
+
+class TraitSignaturesFuncDecl(TraitSignatures):
+    def __init__(self, funcdecl):
+        self.funcdecl = funcdecl
+
+    def accept(self, visitor):
+        return visitor.visitTraitSignaturesFuncDecl(self)
+
+class TraitSignaturesTraitMethod(TraitSignatures):
+    def __init__(self, traitmethod):
+        self.traitmethod = traitmethod
+
+    def accept(self, visitor):
+        return visitor.visitTraitSignaturesTraitMethod(self)
+
+class TraitMethodConcrete(TraitMethod):
+    def __init__(self, id, traitsignature):
+        self.id = id
+        self.traitsignature = traitsignature
+    
+    def accept(self, visitor):
+        return visitor.visitTraitMethodConcrete(self)
+
+class TraitSignatureConcrete(TraitSignature):
+    def __init__(self, traitsignaturep, body):
+        self.traitsignaturep = traitsignaturep
+        self.body = body
+    
+    def accept(self, visitor):
+        return visitor.visitTraitSignatureConcrete(self)
+
+class TraitSignaturePSingleP(TraitSignatureP):
+    def __init__(self, type):
+        self.type = type
+    
+    def accept(self, visitor):
+        return visitor.visitTraitSignaturePSingleP(self)
+
+class TraitSignaturePSinglePV(TraitSignatureP):
+    def __init__(self):
+        pass
+
+    def accept(self, visitor):
+        return visitor.visitTraitSignaturePSinglePV(self)
+
+class TraitSignaturePMultiP(TraitSignatureP):
+    def __init__(self, sigparams, type):
+        self.sigparams = sigparams
+        self.type = type
+
+    def accept(self, visitor):
+        return visitor.visitTraitSignaturePMultiP(self)
+
+class TraitSignaturePMultiPV(TraitSignatureP):
+    def __init__(self, sigparams):
+        self.sigparams = sigparams
+
+    def accept(self, visitor):
+        return visitor.visitTraitSignaturePMultiPV(self)
 
 #COMANDOS
 class StmtsSingle(Stmts):

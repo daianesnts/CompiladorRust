@@ -95,6 +95,7 @@ def p_traitdecl(p):
     '''traitdecl : TRAIT ID LBRACE traitbody RBRACE'''
     p[0] = TraitDeclConcrete(p[2], p[4])
 
+"""
 def p_traitbody_single(p):
     '''traitbody : signature'''
     p[0] = TraitBodySingle(p[1])
@@ -102,7 +103,54 @@ def p_traitbody_single(p):
 def p_traitbody_multi(p):
     '''traitbody : signature SCOLON traitbody'''
     p[0] = TraitBodyMulti(p[1], p[3])
+"""
+def p_traitbody_single(p):
+    '''traitbody : traitsignatures'''
+    p[0] = TraitBodySingle(p[1])
 
+def p_traitbody_multi(p):
+    '''traitbody : traitsignatures traitbody'''
+    p[0] = TraitBodyMulti(p[1], p[2])
+
+def p_traitsignatures_signature(p):
+    '''traitsignatures : signature SCOLON'''
+    p[0] = TraitSignaturesSignature(p[1])
+
+def p_traitsignatures_funcdecl(p):
+    '''traitsignatures : funcdecl'''
+    p[0] = TraitSignaturesFuncDecl(p[1])
+
+def p_traitsignatures_traitmethod(p):
+    '''traitsignatures : traitmethod'''
+    p[0] = TraitSignaturesTraitMethod(p[1])
+
+def p_traitmethod(p):
+    '''traitmethod : FN ID traitsignature'''
+    p[0] = TraitMethodConcrete(p[2], p[3])
+
+def p_traitsignature(p):
+    '''traitsignature : traitsignaturep SCOLON'''
+    p[0] = TraitSignatureConcrete(p[1], None)
+
+def p_traitsignature_body(p):
+    '''traitsignature : traitsignaturep body'''
+    p[0] = TraitSignatureConcrete(p[1], p[2])
+
+def p_traitsignaturep_singlep(p):
+    '''traitsignaturep : LPAREN BITAND SELFTYPE RPAREN ARROW type'''
+    p[0] = TraitSignaturePSingleP(p[6])
+
+def p_traitsignaturep_singlepv(p):
+    '''traitsignaturep : LPAREN BITAND SELFTYPE RPAREN'''
+    p[0] = TraitSignaturePSinglePV()
+
+def p_traitsignaturep_multip(p):
+    '''traitsignaturep : LPAREN BITAND SELFTYPE COMMA sigparams RPAREN ARROW type'''
+    p[0] = TraitSignaturePMultiP(p[5], p[8])
+
+def p_traitsignaturep_multipv(p):
+    '''traitsignaturep : LPAREN BITAND SELFTYPE COMMA sigparams RPAREN'''
+    p[0] = TraitSignaturePMultiPV(p[5])
 
 #COMANDOS
 def p_stmts_single(p):
@@ -190,9 +238,11 @@ def p_decl_const(p):
     '''decl : CONST ID COLON type ATTRIB exp SCOLON'''
     p[0] = DeclCons(p[2], p[4], p[6])
 
+"""
 def p_decl_exp(p):
     '''decl : ID ATTRIB exp SCOLON'''
     p[0] = DeclExp(p[1], p[3])
+"""
 
 def p_typedecl_typed(p):
     '''typedecl : COLON type'''
