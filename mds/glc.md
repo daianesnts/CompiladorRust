@@ -13,7 +13,7 @@ topdecl  → funcdecl | structdecl | traitdecl
 
 funcdecl → signature body
 
-signature → "fn" ID sigaturei
+signature → "fn" ID signaturei
 
 signaturei → signaturep | signaturenp
 
@@ -30,15 +30,27 @@ body → "{" stmts "}"
 ```
 #STRUCT E TRAIT
 
-structdecl   → "struct" ID "{" structfields "}"
+structdecl     → "struct" ID "{" structfields "}"
 
-structfields → structfield | structfield "," structfields
+structfields   → structfield | structfield "," structfields
 
-structfield  → ID ":" TYPE
+structfield    → ID ":" TYPE
 
-traitdecl    → "trait" ID "{" traitbody "}"
+traitdecl      → "trait" ID "{" traitbody "}"
 
-traitbody    → signature | signature ";" traitbody
+traitbody      → traitsignatures | traitsignatures traitbody
+
+traitsignatures → signature ";" | funcdecl | traitmethod
+
+traitmethod    → "fn" ID traitsignature
+
+traitsignature → traitsignaturep ";" | traitsignaturep body
+
+traitsignaturep → traitsingleparam | traitmultiparam
+
+traitsingleparam → "(" "&" "self" ")" | "(" "&" "self" ")" "->" TYPE
+
+traitmultiparam → "(" "&" "self" "," sigparams ")" | "(" "&" "self" "," sigparams ")" "->" TYPE
 ```
 ```
 #COMANDOS
@@ -70,8 +82,6 @@ decllet → "let" ID typedecl "=" exp ";"
 declmut → "let" "mut" ID typedecl "=" exp ";"
 
 declcons → "const" ID ":" TYPE "=" exp ";"
-
-declexp → ID "=" exp ";"
 
 typedecl → ":" TYPE | ε
 ```
