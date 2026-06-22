@@ -44,7 +44,7 @@ class VisitorAbstrato(ABC):
         pass
 
     @abstractmethod
-    def vistSignatureFuncP(self, vsigfp):
+    def visitSignatureFuncP(self, vsigfp):
         pass
 
     @abstractmethod
