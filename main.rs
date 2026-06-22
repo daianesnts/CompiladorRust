@@ -17,6 +17,13 @@ fn main() {
 	
 	while y < x && x >= y {
 		y = y + 1;
+		if y > 10 {
+			x += 10;
+		} else if j < 20 {
+			y += 20;
+		} else {
+			j = j + 25 * x + 20;
+		}
 	}
 	call();
 	test += 10;
@@ -27,5 +34,8 @@ fn main() {
 }
 
 trait Describable {
-	fn describe(&self, name : i32) -> String;
+	fn describe(name : i32) -> String;
+	fn describe(nome: i32);
+	fn describe(&self) -> String;
+	fn descbrie(&self);
 }
