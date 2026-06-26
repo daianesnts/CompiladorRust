@@ -127,7 +127,8 @@ exp_mul     → exp_mul "*" exp_unary |
 exp_unary   → "!" exp_unary | "-" exp_unary | exp_primary
 
 exp_primary → call |
-              NUM | 
+              NUM |
+              STRING |
               ID |
               "true" |
               "false" |
