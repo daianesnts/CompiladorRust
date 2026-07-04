@@ -631,6 +631,13 @@ class ExpPrimaryId(ExpPrimary):
     def accept(self, visitor):
         return visitor.visitExpPrimaryId(self)
 
+class ExpPrimaryString(ExpPrimary):
+    def __init__(self, value):
+        self.value = value
+
+    def accept(self, visitor):
+        return visitor.visitExpPrimaryString(self)
+
 class ExpPrimaryBool(ExpPrimary):
     def __init__(self, value):
         self.value = value

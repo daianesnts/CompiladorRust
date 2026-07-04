@@ -413,6 +413,10 @@ def p_exp_primary_id(p):
     '''exp_primary : ID'''
     p[0] = ExpPrimaryId(p[1])
 
+def p_exp_primary_string(p):
+    '''exp_primary : STRING'''
+    p[0] = ExpPrimaryString(p[1])
+
 def p_exp_primary_true(p):
     '''exp_primary : TRUE'''
     p[0] = ExpPrimaryBool(True)

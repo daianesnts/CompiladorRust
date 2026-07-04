@@ -336,6 +336,10 @@ class VisitorAbstrato(ABC):
         pass
 
     @abstractmethod
+    def visitExpPrimaryString(self, veps):
+        pass
+
+    @abstractmethod
     def visitExpPrimaryBool(self, vepb):
         pass
 

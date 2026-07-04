@@ -48,6 +48,7 @@ tokens = ['ID', 'NUMBER', # Operadores aritméticos
           'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'LBRACE', 'RBRACE', # Delimitadores
           'COLON', 'DCOLON', 'SCOLON', 'COMMA', 
           'INDENT', 'DEINDENT', # Indentação
+          'STRING', # String
           ]+ list(reserved.values())
 
 t_ignore    = ' \t'
@@ -104,6 +105,11 @@ t_COMMA     = r','
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     t.type = reserved.get(t.value, 'ID')
+    return t
+
+def t_STRING(t):
+    r'"([^"\\]|\\.)*"'
+    t.value = t.value[1:-1]
     return t
 
 def t_NUMBER(t):

@@ -379,6 +379,9 @@ class PrettyPrinter(VisitorAbstrato):
     
     def visitExpPrimaryId(self, vepi):
         print(vepi.id, end="")
+
+    def visitExpPrimaryString(self, veps):
+        print(f'"{veps.value}"', end="")
     
     def visitExpPrimaryBool(self, vepb):
         print(vepb.value, end="")
