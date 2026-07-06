@@ -6,7 +6,7 @@ A seguinte gramática será utilizada para desenvolver o analisador sintático d
 
 program  → topdecl | topdecl program
 
-topdecl  → funcdecl | structdecl | traitdecl
+topdecl  → funcdecl | structdecl | traitdecl | decl
 ```
 ```
 #FUNÇÕES
