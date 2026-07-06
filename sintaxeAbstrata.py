@@ -38,6 +38,13 @@ class TopDeclTraitDecl(TopDecl):
     def accept(self, visitor):
         return visitor.visitTopDeclTraitDecl(self)
 
+class TopDeclDecl(TopDecl):
+    def __init__(self, decl):
+        self.decl = decl
+
+    def accept(self, visitor):
+        return visitor.visitTopDeclDecl(self)
+
 
 #FUNCOES
 class FuncDeclSignatureBody(FuncDecl):
