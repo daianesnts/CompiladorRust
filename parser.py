@@ -23,6 +23,10 @@ def p_topdecl_trait(p):
     '''topdecl : traitdecl'''
     p[0] = TopDeclTraitDecl(p[1])
 
+def p_topdecl_decl(p):
+    '''topdecl : decl'''
+    p[0] = TopDeclTraitDecl(p[1])
+
 
 #FUNÇÕES
 def p_funcdecl(p):
