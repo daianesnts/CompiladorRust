@@ -26,6 +26,10 @@ class VisitorAbstrato(ABC):
     def visitTopDeclTraitDecl(self, vtdtd):
         pass
 
+    @abstractmethod
+    def visitTopDeclDecl(self, vtdd):
+        pass
+
 #FUNÇÕES
     @abstractmethod
     def visitFuncDeclSignatureBody(self, vfdsb):
