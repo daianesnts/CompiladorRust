@@ -35,3 +35,5 @@ Abaixo está o cronograma de atividades:
 2. **Atividade 2:** Elaboração da Documentação Sintática.
 3. **Atividade 3:** Elaboração da Documentação Sintática e Exemplos de Código.
 4. **Atividade 4:** Elaboração da Gramática Livre de Contexto e implementação no PLY.
+5. **Atividade 5:** Elaboração da Sintaxe Abstrata e Visitor Pretty Printer.
+6. **Atividade 6:** Análise Semântica.
