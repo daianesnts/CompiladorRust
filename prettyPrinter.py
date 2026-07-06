@@ -30,6 +30,9 @@ class PrettyPrinter(VisitorAbstrato):
     def visitTopDeclTraitDecl(self, vtdtd):
         vtdtd.traitdecl.accept(self)
     
+    def visitTopDeclDecl(self, vtdd):
+        vtdd.decl.accept(self)
+    
 #FUNÇÕES
     def visitFuncDeclSignatureBody(self, vfdsb):
         vfdsb.signature.accept(self)
