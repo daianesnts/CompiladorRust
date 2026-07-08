@@ -32,40 +32,47 @@ class VisitorSemanticoFirst(VisitorAbstrato):
 
     # FUNCOES
     def visitFuncDeclSignatureBody(self, vfdsb):
-        pass
+        vfdsb.signature.accept(self)
 
     def visitSignatureFunc(self, vsf):
-        pass
+        params, tipo_retorno = vsf.signaturei.accept(self)
+        simbolo = Simbolo(nome=vsf.id, categoria='funcao', tipo=tipo_retorno, params=params)
+        self.tabela.inserir(simbolo)
 
     def visitSignatureISigP(self, vsigp):
-        pass
+        return vsigp.signaturep.accept(self)
 
     def visitSignatureISigNP(self, vsignp):
-        pass
+        return vsignp.signaturenp.accept(self)
 
     def visitSignatureFuncP(self, vsigfp):
-        pass
+        params = vsigfp.sigparams.accept(self)
+        tipo_retorno = vsigfp.type.accept(self)
+        return params, tipo_retorno
 
     def visitSignatureFuncPVoid(self, vsigfpv):
-        pass
+        params = vsigfpv.sigparams.accept(self)
+        return params, None
 
     def visitSignatureFuncNP(self, vsigfnp):
-        pass
+        tipo_retorno = vsigfnp.type.accept(self)
+        return [], tipo_retorno
 
     def visitSignatureFuncNPVoid(self, vsigfnpv):
-        pass
+        return [], None
 
     def visitSigParamsSingle(self, vsp):
-        pass
+        return [vsp.sigparam.accept(self)]
 
     def visitSigParamsMulti(self, vspm):
-        pass
+        return [vspm.sigparam.accept(self)] + vspm.sigparams.accept(self)
 
     def visitSigParamConcrete(self, vspc):
-        pass
+        tipo = vspc.type.accept(self)
+        return (vspc.id, tipo)
 
     def visitBodyConcrete(self, vbc):
-        pass
+        pass  
 
     # STRUCT E TRAIT
     def visitStructDeclConcrete(self, vsdc):
@@ -355,6 +362,9 @@ class VisitorSemanticoSecond(VisitorAbstrato):
 
     def visitTopDeclTraitDecl(self, vtdtd):
         vtdtd.traitdecl.accept(self)
+
+    def visitTopDeclDecl(self, vtdd):
+        vtdd.decl.accept(self)
 
     # FUNCOES
     def visitFuncDeclSignatureBody(self, vfdsb):

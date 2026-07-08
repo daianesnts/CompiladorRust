@@ -1,5 +1,5 @@
 from parser import *
-from visitorSemantico import VisitorSemantico
+from visitorSemantico import VisitorSemanticoFirst, VisitorSemanticoSecond
 
 
 def main():
@@ -14,8 +14,11 @@ def main():
 
     result = the_parser.parse(source_code, lexer=the_lexer)
 
-    visitor = VisitorSemantico()
+    visitor = VisitorSemanticoFirst()
     result.accept(visitor)
+
+    visitor2 = VisitorSemanticoSecond(visitor.tabela)
+    result.accept(visitor2)
 
 
 if __name__ == '__main__':
