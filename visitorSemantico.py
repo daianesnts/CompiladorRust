@@ -363,6 +363,9 @@ class VisitorSemanticoSecond(VisitorAbstrato):
     def visitTopDeclTraitDecl(self, vtdtd):
         vtdtd.traitdecl.accept(self)
 
+    def visitTopDeclDecl(self, vtdd):
+        vtdd.decl.accept(self)
+
     # FUNCOES
     def visitFuncDeclSignatureBody(self, vfdsb):
         pass
