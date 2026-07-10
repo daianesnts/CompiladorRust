@@ -322,10 +322,16 @@ class VisitorSemanticoFirst(VisitorAbstrato):
 
     # CHAMADAS DE FUNCAO
     def visitCallFuncArgs(self, vcfa):
-        pass
+        simbolo = self.tabela.buscar(vcfa.id)
+        if not simbolo:
+            raise ValueError(f"Erro semântico:\nIdentificador '{vcfa.id}' não foi declarado.")
+        
+        vcfa.args.accept(self)
 
     def visitCallFunc(self, vcf):
-        pass
+        simbolo = self.tabela.buscar(vcf.id)
+        if not simbolo:
+            raise ValueError(f"Erro semântico:\nIdentificador '{vcf.id}' não foi declarado.")
 
     def visitArgsExpArgs(self, vaea):
         pass
@@ -368,7 +374,13 @@ class VisitorSemanticoSecond(VisitorAbstrato):
 
     # FUNCOES
     def visitFuncDeclSignatureBody(self, vfdsb):
-        pass
+        simbolo_funcao = self.tabela.buscar(vfdsb.signature.id)
+        self.tabela.pushEscopo()
+        if simbolo_funcao and simbolo_funcao.params:
+            for param_nome, param_tipo in simbolo_funcao.params:
+                self.tabela.inserir(Simbolo(nome=param_nome, categoria='parametro', tipo=param_tipo))
+        vfdsb.body.accept(self)
+        self.tabela.popEscopo()
 
     def visitSignatureFunc(self, vsf):
         pass
@@ -401,7 +413,8 @@ class VisitorSemanticoSecond(VisitorAbstrato):
         pass
 
     def visitBodyConcrete(self, vbc):
-        pass
+        if vbc.stmts:
+            vbc.stmts.accept(self)
 
     # STRUCT E TRAIT
     def visitStructDeclConcrete(self, vsdc):
@@ -475,10 +488,14 @@ class VisitorSemanticoSecond(VisitorAbstrato):
         self.tabela.popEscopo()
 
     def visitStmWhile(self, vsw):
-        pass
+        vsw.exp.accept(self)
+        self.tabela.pushEscopo()
+        vsw.stmts.accept(self)
+        self.tabela.popEscopo()
 
     def visitStmReturn(self, vsr):
-        pass
+        if vsr.exp:
+            vsr.exp.accept(self)
 
     def visitStmBreak(self, vsb):
         pass
@@ -488,13 +505,30 @@ class VisitorSemanticoSecond(VisitorAbstrato):
 
     # IF/ELSE
     def visitIfNoElse(self, vifne):
-        pass
+        vifne.exp.accept(self)
+        self.tabela.pushEscopo()
+        vifne.stmts.accept(self)
+        self.tabela.popEscopo()
 
     def visitIfElse(self, vife):
-        pass
+        vife.exp.accept(self)
+        
+        self.tabela.pushEscopo()
+        vife.stmtsif.accept(self)
+        self.tabela.popEscopo()
+        
+        self.tabela.pushEscopo()
+        vife.stmtselse.accept(self)
+        self.tabela.popEscopo()
 
     def visitIfElseIfr(self, vifei):
-        pass
+        vifei.exp.accept(self)
+        
+        self.tabela.pushEscopo()
+        vifei.stmtsif.accept(self)
+        self.tabela.popEscopo()
+        
+        vifei.ifr.accept(self)
 
     # DECLARACOES
     def visitDeclLet(self, vdl):
@@ -651,10 +685,16 @@ class VisitorSemanticoSecond(VisitorAbstrato):
 
     # CHAMADAS DE FUNCAO
     def visitCallFuncArgs(self, vcfa):
-        pass
+        simbolo = self.tabela.buscar(vcfa.id)
+        if not simbolo:
+            raise ValueError(f"Erro semântico:\nIdentificador '{vcfa.id}' não foi declarado.")
+        
+        vcfa.args.accept(self)
 
     def visitCallFunc(self, vcf):
-        pass
+        simbolo = self.tabela.buscar(vcf.id)
+        if not simbolo:
+            raise ValueError(f"Erro semântico:\nIdentificador '{vcf.id}' não foi declarado.")
 
     def visitArgsExpArgs(self, vaea):
         pass
