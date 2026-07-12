@@ -36,7 +36,8 @@ class VisitorSemanticoFirst(VisitorAbstrato):
 
     def visitSignatureFunc(self, vsf):
         params, tipo_retorno = vsf.signaturei.accept(self)
-        simbolo = Simbolo(nome=vsf.id, categoria='funcao', tipo=tipo_retorno, params=params)
+        simbolo = Simbolo(nome=vsf.id, categoria='funcao', 
+                          tipo=tipo_retorno, params=params)
         self.tabela.inserir(simbolo)
 
     def visitSignatureISigP(self, vsigp):
@@ -405,52 +406,68 @@ class VisitorSemanticoSecond(VisitorAbstrato):
 
     # STRUCT E TRAIT
     def visitStructDeclConcrete(self, vsdc):
-        pass
+        vsdc.id.accept(self)
+        self.tabela.pushEscopo()
+        vsdc.structfields.accept(self)
+        self.tabela.popEscopo()
 
     def visitStructFieldsSingle(self, vsfs):
-        pass
+        vsfs.structfield.accept(self)
 
     def visitStructFieldsMulti(self, vsfm):
-        pass
+        vsfm.structfield.accept(self)
+        vsfm.structfields.accept(self)
 
     def visitStructFieldConcrete(self, vsfc):
-        pass
+        if self.tabela.buscarEscopoAtual(vsfc.id):
+            raise ValueError(f"Erro semântico:\n'{vsfc.id}' já declarado neste escopo.")
+        self.tabela.inserir(Simbolo(nome=vsfc.id, categoria='variavel', tipo=vsfc.type.accept(self)))
 
     def visitTraitDeclConcrete(self, vtdc):
-        pass
+        vtdc.id.accept(self)
+        self.tabela.pushEscopo()
+        vtdc.traitbody.accept(self)
+        self.tabela.popEscopo()
 
     def visitTraitBodySingle(self, vtbs):
-        pass
+        vtbs.traitsignatures.accept(self)
 
     def visitTraitBodyMulti(self, vtbm):
-        pass
+        vtbm.traitsignatures.accept(self)
+        vtbm.traitbody.accept(self)
 
     def visitTraitSignaturesSignature(self, vtss):
-        pass
+        vtss.signature.accept(self)
 
     def visitTraitSignaturesFuncDecl(self, vtsfd):
-        pass
+        vtsfd.funcdecl.accept(self)
 
     def visitTraitSignaturesTraitMethod(self, vtstm):
-        pass
+        vtstm.traitmethod.accept(self)
 
     def visitTraitMethodConcrete(self, vtmc):
-        pass
+        vtmc.id.accept(self)
+        self.tabela.pushEscopo()
+        vtmc.traitsignature.accept(self)
+        self.tabela.popEscopo()
 
     def visitTraitSignatureConcrete(self, vtsc):
-        pass
+        vtsc.id.accept(self)
+        self.tabela.pushEscopo()
+        vtsc.traitsignaturep.accept(self)
+        self.tabela.popEscopo()
 
     def visitTraitSignaturePSingleP(self, vtspsp):
-        pass
+        vtspsp.traitsignature.accept(self)
 
     def visitTraitSignaturePSinglePV(self, vtspspv):
-        pass
+        vtspspv.traitsignature.accept(self)
 
     def visitTraitSignaturePMultiP(self, vtspmp):
-        pass
+        vtspmp.traitsignature.accept(self)
 
     def visitTraitSignaturePMultiPV(self, vtspmpv):
-        pass
+        vtspmpv.traitsignature.accept(self)
 
     # COMANDOS
     def visitStmtsSingle(self, vss):
