@@ -322,16 +322,10 @@ class VisitorSemanticoFirst(VisitorAbstrato):
 
     # CHAMADAS DE FUNCAO
     def visitCallFuncArgs(self, vcfa):
-        simbolo = self.tabela.buscar(vcfa.id)
-        if not simbolo:
-            raise ValueError(f"Erro semântico:\nIdentificador '{vcfa.id}' não foi declarado.")
-        
-        vcfa.args.accept(self)
+        pass
 
     def visitCallFunc(self, vcf):
-        simbolo = self.tabela.buscar(vcf.id)
-        if not simbolo:
-            raise ValueError(f"Erro semântico:\nIdentificador '{vcf.id}' não foi declarado.")
+        pass
 
     def visitArgsExpArgs(self, vaea):
         pass
@@ -374,11 +368,7 @@ class VisitorSemanticoSecond(VisitorAbstrato):
 
     # FUNCOES
     def visitFuncDeclSignatureBody(self, vfdsb):
-        simbolo_funcao = self.tabela.buscar(vfdsb.signature.id)
         self.tabela.pushEscopo()
-        if simbolo_funcao and simbolo_funcao.params:
-            for param_nome, param_tipo in simbolo_funcao.params:
-                self.tabela.inserir(Simbolo(nome=param_nome, categoria='parametro', tipo=param_tipo))
         vfdsb.body.accept(self)
         self.tabela.popEscopo()
 
@@ -657,17 +647,19 @@ class VisitorSemanticoSecond(VisitorAbstrato):
         return vepc.call.accept(self)
 
     def visitExpPrimaryNum(self, vepn):
-        pass
+        return 'int'
 
     def visitExpPrimaryId(self, vepi):
-        if not self.tabela.existe(vepi.id):
+        simbolo = self.tabela.buscar(vepi.id)
+        if not simbolo:
             raise ValueError(f"Erro semântico:\nIdentificador '{vepi.id}' não foi declarado.")
+        return simbolo.tipo
 
     def visitExpPrimaryString(self, veps):
-        pass
+        return 'string'
 
     def visitExpPrimaryBool(self, vepb):
-        pass
+        return 'bool'
 
     def visitExpPrimaryParen(self, vepp):
         return vepp.exp.accept(self)
@@ -688,19 +680,46 @@ class VisitorSemanticoSecond(VisitorAbstrato):
         simbolo = self.tabela.buscar(vcfa.id)
         if not simbolo:
             raise ValueError(f"Erro semântico:\nIdentificador '{vcfa.id}' não foi declarado.")
+        if simbolo.categoria != 'funcao':
+            raise ValueError(f"Erro semântico:\nIdentificador '{vcfa.id}' não é uma função.")
         
-        vcfa.args.accept(self)
+        args_tipos = vcfa.args.accept(self)
+        if not isinstance(args_tipos, list):
+            args_tipos = [args_tipos] if args_tipos else []
+            
+        params = simbolo.params or []
+        if len(args_tipos) != len(params):
+            raise ValueError(f"Erro semântico:\nFunção '{vcfa.id}' espera {len(params)} argumentos, mas recebeu {len(args_tipos)}.")
+            
+        for i, (arg_tipo, (param_nome, param_tipo)) in enumerate(zip(args_tipos, params)):
+            if arg_tipo and param_tipo and arg_tipo != param_tipo:
+                raise ValueError(f"Erro semântico:\nArgumento {i+1} da função '{vcfa.id}' esperava tipo '{param_tipo}', mas recebeu '{arg_tipo}'.")
+                
+        return simbolo.tipo
 
     def visitCallFunc(self, vcf):
         simbolo = self.tabela.buscar(vcf.id)
         if not simbolo:
             raise ValueError(f"Erro semântico:\nIdentificador '{vcf.id}' não foi declarado.")
+        if simbolo.categoria != 'funcao':
+            raise ValueError(f"Erro semântico:\nIdentificador '{vcf.id}' não é uma função.")
+            
+        params = simbolo.params or []
+        if len(params) > 0:
+            raise ValueError(f"Erro semântico:\nFunção '{vcf.id}' espera {len(params)} argumentos, mas recebeu 0.")
+            
+        return simbolo.tipo
 
     def visitArgsExpArgs(self, vaea):
-        pass
+        tipo_arg = vaea.exp.accept(self)
+        tipos_restantes = vaea.args.accept(self)
+        if not isinstance(tipos_restantes, list):
+            tipos_restantes = [tipos_restantes] if tipos_restantes else []
+        return [tipo_arg] + tipos_restantes
 
     def visitArgsExp(self, vae):
-        pass
+        tipo_arg = vae.exp.accept(self)
+        return [tipo_arg]
 
     # TIPO
     def visitTypeID(self, vtid):
