@@ -171,20 +171,25 @@ class VisitorSemanticoFirst(VisitorAbstrato):
     def visitDeclLet(self, vdl):
         if self.tabela.buscarEscopoAtual(vdl.id):
             raise ValueError(f"Erro semântico:\n'{vdl.id}' já declarado neste escopo.")
-        self.tabela.inserir(Simbolo(nome=vdl.id, categoria='variavel'))
+        tipo = vdl.typedecl.accept(self)
+        self.tabela.inserir(Simbolo(nome=vdl.id, categoria='variavel', tipo=tipo))
 
     def visitDeclMut(self, vdm):
         if self.tabela.buscarEscopoAtual(vdm.id):
             raise ValueError(f"Erro semântico:\n'{vdm.id}' já declarado neste escopo.")
-        self.tabela.inserir(Simbolo(nome=vdm.id, categoria='variavel_mut'))
+        tipo = vdm.typedecl.accept(self)
+        self.tabela.inserir(Simbolo(nome=vdm.id, categoria='variavel_mut', tipo=tipo))
 
     def visitDeclConst(self, vdc):
         if self.tabela.buscarEscopoAtual(vdc.id):
             raise ValueError(f"Erro semântico:\n'{vdc.id}' já declarado neste escopo.")
-        self.tabela.inserir(Simbolo(nome=vdc.id, categoria='const'))
+        tipo = vdc.type.accept(self)
+        self.tabela.inserir(Simbolo(nome=vdc.id, categoria='const', tipo=tipo))
 
     def visitTypeDeclConcrete(self, vtdc):
-        pass
+        if vtdc.type is not None:
+            return vtdc.type.accept(self)
+        return None
 
     # EXPRESSOES
     def visitExpAssign(self, vea):
@@ -500,21 +505,32 @@ class VisitorSemanticoSecond(VisitorAbstrato):
     def visitDeclLet(self, vdl):
         if self.tabela.buscarEscopoAtual(vdl.id):
             raise ValueError(f"Erro semântico:\n'{vdl.id}' já declarado neste escopo.")
-        self.tabela.inserir(Simbolo(nome=vdl.id, categoria='variavel'))
+        else:
+            tipo = vdl.typedecl.accept(self)
+            if tipo is None and vdl.exp is not None:
+                tipo = vdl.exp.accept(self)
+        self.tabela.inserir(Simbolo(nome=vdl.id, categoria='variavel', tipo=tipo))
 
     def visitDeclMut(self, vdm):
         if self.tabela.buscarEscopoAtual(vdm.id):
             raise ValueError(f"Erro semântico:\n'{vdm.id}' já declarado neste escopo.")
-        self.tabela.inserir(Simbolo(nome=vdm.id, categoria='variavel_mut'))
+        tipo = vdm.typedecl.accept(self)
+        if tipo is None and vdm.exp is not None:
+            tipo = vdm.exp.accept(self) 
+        self.tabela.inserir(Simbolo(nome=vdm.id, categoria='variavel_mut', tipo=tipo))
 
     def visitDeclConst(self, vdc):
         if self.tabela.buscarEscopoAtual(vdc.id):
             raise ValueError(f"Erro semântico:\n'{vdc.id}' já declarado neste escopo.")
-        self.tabela.inserir(Simbolo(nome=vdc.id, categoria='const'))
+        tipo = vdc.type.accept(self)
+        if tipo is None and vdc.exp is not None:
+            tipo = vdc.exp.accept(self)
+        self.tabela.inserir(Simbolo(nome=vdc.id, categoria='const', tipo=tipo))
 
     def visitTypeDeclConcrete(self, vtdc):
-        pass
-
+        if vtdc.type != None:
+            return vtdc.type.accept(self)
+        
     # EXPRESSOES
     def visitExpAssign(self, vea):
         return vea.exp_assign.accept(self)
@@ -623,17 +639,17 @@ class VisitorSemanticoSecond(VisitorAbstrato):
         return vepc.call.accept(self)
 
     def visitExpPrimaryNum(self, vepn):
-        pass
+        return 'i32'
 
     def visitExpPrimaryId(self, vepi):
         if not self.tabela.existe(vepi.id):
             raise ValueError(f"Erro semântico:\nIdentificador '{vepi.id}' não foi declarado.")
 
     def visitExpPrimaryString(self, veps):
-        pass
+        return 'String'
 
     def visitExpPrimaryBool(self, vepb):
-        pass
+        return 'bool'
 
     def visitExpPrimaryParen(self, vepp):
         return vepp.exp.accept(self)
