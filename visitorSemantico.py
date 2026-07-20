@@ -706,7 +706,7 @@ class VisitorSemanticoSecond(VisitorAbstrato):
             
         params = simbolo.params or []
         if len(params) > 0:
-            raise ValueError(f"Erro semântico:\nFunção '{vcf.id}' espera {len(params)} argumentos, mas recebeu 0.")
+            raise ValueError(f"Erro semântico:\nFunção '{vcf.id}' espera {len(params)} argumentos, mas recebeu {len(params)}.")
             
         return simbolo.tipo
 
