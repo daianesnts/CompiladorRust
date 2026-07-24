@@ -368,40 +368,47 @@ class VisitorSemanticoSecond(VisitorAbstrato):
 
     # FUNCOES
     def visitFuncDeclSignatureBody(self, vfdsb):
-        pass
+        vfdsb.pushEscopo()
+        vfdsb.signature.accept(self)
+        vfdsb.body.accept(self)
 
     def visitSignatureFunc(self, vsf):
-        pass
-
+        Simbolo = self.tabela.buscar(vsf.id)
+        for param in Simbolo.params:
+            a=Simbolo(param[0], 'variavel', None, None)
+        
     def visitSignatureISigP(self, vsigp):
-        pass
+        return vsigp.signaturep.accept(self)
+
 
     def visitSignatureISigNP(self, vsignp):
-        pass
+        return vsignp.signaturenp.accept(self)
 
     def visitSignatureFuncP(self, vsigfp):
-        pass
+        return vsigfp.sigparams.accept(self), vsigfp.type.accept(self)
 
     def visitSignatureFuncPVoid(self, vsigfpv):
-        pass
+        return vsigfpv.sigparams.accept(self), None
 
     def visitSignatureFuncNP(self, vsigfnp):
-        pass
+        return [], vsigfnp.type.accept(self)
 
     def visitSignatureFuncNPVoid(self, vsigfnpv):
-        pass
+        return [], None
 
     def visitSigParamsSingle(self, vsp):
-        pass
+        return [vsp.sigparam.accept(self)]
 
     def visitSigParamsMulti(self, vspm):
-        pass
+        return [vspm.sigparam.accept(self)] + vspm.sigparams.accept(self)
 
     def visitSigParamConcrete(self, vspc):
-        pass
+        tipo = vspc.type.accept(self)
+        return (vspc.id, tipo)
 
     def visitBodyConcrete(self, vbc):
-        pass
+        if (vbc.stmts is not None):
+            vbc.stmts.accept(self)
 
     # STRUCT E TRAIT
     def visitStructDeclConcrete(self, vsdc):
