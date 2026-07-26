@@ -569,7 +569,7 @@ class VisitorSemanticoSecond(VisitorAbstrato):
         if simboloEsq.categoria != 'variavel_mut':
             raise ValueError(f"Erro semântico:\nIdentificador '{vea.id}' não é uma variável mutável.")
         simboloDir = vea.exp.accept(self)
-        if not atribuicaoValida(simboloEsq, simboloDir):
+        if simboloEsq.tipo != simboloDir.tipo:
             raise ValueError(f"Erro semântico:\nNão é possível atribuir um valor do tipo '{simboloDir.tipo}' a uma variável do tipo '{simboloEsq.tipo}'.")
         return simboloEsq
 
@@ -581,7 +581,7 @@ class VisitorSemanticoSecond(VisitorAbstrato):
         if simboloEsq.categoria != 'variavel_mut':
             raise ValueError(f"Erro semântico:\nIdentificador '{vas.id}' não é uma variável mutável.")
         simboloDir = vas.exp.accept(self)
-        if not atribuicaoValida(simboloEsq, simboloDir):
+        if simboloEsq.tipo != simboloDir.tipo:
             raise ValueError(f"Erro semântico:\nNão é possível atribuir um valor do tipo '{simboloDir.tipo}' a uma variável do tipo '{simboloEsq.tipo}'.")
         return simboloEsq
 
@@ -592,7 +592,7 @@ class VisitorSemanticoSecond(VisitorAbstrato):
         if simboloEsq.categoria != 'variavel_mut':
             raise ValueError(f"Erro semântico:\nIdentificador '{vas.id}' não é uma variável mutável.")
         simboloDir = vas.exp.accept(self)
-        if not atribuicaoValida(simboloEsq, simboloDir):
+        if simboloEsq.tipo != simboloDir.tipo:
             raise ValueError(f"Erro semântico:\nNão é possível atribuir um valor do tipo '{simboloDir.tipo}' a uma variável do tipo '{simboloEsq.tipo}'.")
         return simboloEsq
 
@@ -603,7 +603,7 @@ class VisitorSemanticoSecond(VisitorAbstrato):
         if simboloEsq.categoria != 'variavel_mut':
             raise ValueError(f"Erro semântico:\nIdentificador '{vam.id}' não é uma variável mutável.")
         simboloDir = vam.exp.accept(self)
-        if not atribuicaoValida(simboloEsq, simboloDir):
+        if simboloEsq.tipo != simboloDir.tipo:
             raise ValueError(f"Erro semântico:\nNão é possível atribuir um valor do tipo '{simboloDir.tipo}' a uma variável do tipo '{simboloEsq.tipo}'.")
         return simboloEsq
 
@@ -614,7 +614,7 @@ class VisitorSemanticoSecond(VisitorAbstrato):
         if simboloEsq.categoria != 'variavel_mut':
             raise ValueError(f"Erro semântico:\nIdentificador '{vad.id}' não é uma variável mutável.")
         simboloDir = vad.exp.accept(self)
-        if not atribuicaoValida(simboloEsq, simboloDir):
+        if simboloEsq.tipo != simboloDir.tipo:
             raise ValueError(f"Erro semântico:\nNão é possível atribuir um valor do tipo '{simboloDir.tipo}' a uma variável do tipo '{simboloEsq.tipo}'.")
         if simboloDir.categoria == 'literal' and simboloDir.valor == 0:
             raise ValueError("Erro semântico:\nDivisão por zero.")
@@ -656,7 +656,9 @@ class VisitorSemanticoSecond(VisitorAbstrato):
     def visitExpRel(self, ver):
         simboloEsq = ver.exp_bitor.accept(self)
         simboloDir = ver.exp_bitor2.accept(self)
-        coercao(simboloEsq, simboloDir)  # Apenas para verificar a compatibilidade dos tipos, não precisamos do tipo resultante aqui
+
+        if simboloEsq.tipo != ts.I32 or simboloDir.tipo != ts.I32:
+            raise ValueError(f"Erro semântico:\nOperações relacionais só podem ser aplicadas ao tipo inteiro {ts.I32}.")
 
         if simboloEsq.categoria == 'literal' and simboloDir.categoria == 'literal':
             valor = None
@@ -681,12 +683,14 @@ class VisitorSemanticoSecond(VisitorAbstrato):
     def visitExpBitOr(self, vebo):
         simboloEsq = vebo.exp_bitor.accept(self)
         simboloDir = vebo.exp_bitxor.accept(self)
-        tipo = coercao(simboloEsq, simboloDir)
+
+        if simboloEsq.tipo != ts.I32 or simboloDir.tipo != ts.I32:
+            raise ValueError(f"Erro semântico:\nOperações de bitwise só podem ser aplicadas ao tipo inteiro {ts.I32}.")
 
         if simboloEsq.categoria == 'literal' and simboloDir.categoria == 'literal':
             valor = simboloEsq.valor | simboloDir.valor
-            return ts.Simbolo(nome=None, categoria='literal', tipo=tipo, valor=valor)
-        return ts.Simbolo(nome=None, categoria='variavel', tipo=tipo)
+            return ts.Simbolo(nome=None, categoria='literal', tipo=ts.I32, valor=valor)
+        return ts.Simbolo(nome=None, categoria='variavel', tipo=ts.I32)
 
     def visitExpExpBitXor(self, vebx):
         return vebx.exp_bitxor.accept(self)
@@ -694,12 +698,14 @@ class VisitorSemanticoSecond(VisitorAbstrato):
     def visitExpBitXor(self, vebx):
         simboloEsq = vebx.exp_bitxor.accept(self)
         simboloDir = vebx.exp_bitand.accept(self)
-        tipo = coercao(simboloEsq, simboloDir)
+
+        if simboloEsq.tipo != ts.I32 or simboloDir.tipo != ts.I32:
+            raise ValueError(f"Erro semântico:\nOperações de bitwise só podem ser aplicadas ao tipo inteiro {ts.I32}.")
 
         if simboloEsq.categoria == 'literal' and simboloDir.categoria == 'literal':
             valor = simboloEsq.valor ^ simboloDir.valor
-            return ts.Simbolo(nome=None, categoria='literal', tipo=tipo, valor=valor)
-        return ts.Simbolo(nome=None, categoria='variavel', tipo=tipo)
+            return ts.Simbolo(nome=None, categoria='literal', tipo=ts.I32, valor=valor)
+        return ts.Simbolo(nome=None, categoria='variavel', tipo=ts.I32)
 
     def visitExpExpBitAnd(self, veba):
         return veba.exp_bitand.accept(self)
@@ -707,12 +713,14 @@ class VisitorSemanticoSecond(VisitorAbstrato):
     def visitExpBitAnd(self, veba):
         simboloEsq = veba.exp_bitand.accept(self)
         simboloDir = veba.exp_shift.accept(self)
-        tipo = coercao(simboloEsq, simboloDir)
+
+        if simboloEsq.tipo != ts.I32 or simboloDir.tipo != ts.I32:
+            raise ValueError(f"Erro semântico:\nOperações de bitwise só podem ser aplicadas ao tipo inteiro {ts.I32}.")
 
         if simboloEsq.categoria == 'literal' and simboloDir.categoria == 'literal':
             valor = simboloEsq.valor & simboloDir.valor
-            return ts.Simbolo(nome=None, categoria='literal', tipo=tipo, valor=valor)
-        return ts.Simbolo(nome=None, categoria='variavel', tipo=tipo)
+            return ts.Simbolo(nome=None, categoria='literal', tipo=ts.I32, valor=valor)
+        return ts.Simbolo(nome=None, categoria='variavel', tipo=ts.I32)
 
     def visitExpExpShift(self, ves):
         return ves.exp_shift.accept(self)
@@ -720,7 +728,9 @@ class VisitorSemanticoSecond(VisitorAbstrato):
     def visitExpShift(self, ves):
         simboloEsq = ves.exp_shift.accept(self)
         simboloDir = ves.exp_add.accept(self)
-        tipo = coercao(simboloEsq, simboloDir)
+
+        if simboloEsq.tipo != ts.I32 or simboloDir.tipo != ts.I32:
+            raise ValueError(f"Erro semântico:\nOperações de shift só podem ser aplicadas ao tipo inteiro {ts.I32}.")
 
         if simboloEsq.categoria == 'literal' and simboloDir.categoria == 'literal':
             valor = None
@@ -730,8 +740,10 @@ class VisitorSemanticoSecond(VisitorAbstrato):
                 valor = simboloEsq.valor << simboloDir.valor
             elif ves.op == '>>':
                 valor = simboloEsq.valor >> simboloDir.valor
-            return ts.Simbolo(nome=None, categoria='literal', tipo=tipo, valor=valor)
-        return ts.Simbolo(nome=None, categoria='variavel', tipo=tipo)
+            return ts.Simbolo(nome=None, categoria='literal', tipo=ts.I32, valor=valor)
+        elif simboloDir.categoria == 'literal' and simboloDir.valor < 0:
+            raise ValueError("Erro semântico:\nOperação de shift com valor negativo.")
+        return ts.Simbolo(nome=None, categoria='variavel', tipo=ts.I32)
 
     def visitExpExpAdd(self, vea):
         return vea.exp_add.accept(self)
@@ -739,7 +751,9 @@ class VisitorSemanticoSecond(VisitorAbstrato):
     def visitExpAdd(self, vea):
         simboloEsq = vea.exp_add.accept(self)
         simboloDir = vea.exp_mul.accept(self)
-        tipo = coercao(simboloEsq, simboloDir)
+
+        if simboloEsq.tipo != ts.I32 or simboloDir.tipo != ts.I32:
+            raise ValueError(f"Erro semântico:\nOperações de adição e subtrção só podem ser aplicadas ao tipo inteiro {ts.I32}.")
 
         if simboloEsq.categoria == 'literal' and simboloDir.categoria == 'literal':
             valor = None
@@ -747,8 +761,8 @@ class VisitorSemanticoSecond(VisitorAbstrato):
                 valor = simboloEsq.valor + simboloDir.valor
             elif vea.op == '-':
                 valor = simboloEsq.valor - simboloDir.valor
-            return ts.Simbolo(nome=None, categoria='literal', tipo=tipo, valor=valor)
-        return ts.Simbolo(nome=None, categoria='variavel', tipo=tipo)
+            return ts.Simbolo(nome=None, categoria='literal', tipo=ts.I32, valor=valor)
+        return ts.Simbolo(nome=None, categoria='variavel', tipo=ts.I32)
 
     def visitExpExpMul(self, vem):
         return vem.exp_mul.accept(self)
@@ -756,7 +770,9 @@ class VisitorSemanticoSecond(VisitorAbstrato):
     def visitExpMul(self, vem):
         simboloEsq = vem.exp_mul.accept(self)
         simboloDir = vem.exp_unary.accept(self)
-        tipo = coercao(simboloEsq, simboloDir)
+
+        if simboloEsq.tipo != ts.I32 or simboloDir.tipo != ts.I32:
+            raise ValueError(f"Erro semântico:\nOperações de multiplicação, divisão e módulo só podem ser aplicadas ao tipo inteiro {ts.I32}.")
 
         if simboloEsq.categoria == 'literal' and simboloDir.categoria == 'literal':
             valor = None
@@ -770,8 +786,10 @@ class VisitorSemanticoSecond(VisitorAbstrato):
                 if simboloDir.valor == 0:
                     raise ValueError("Erro semântico:\nDivisão por zero.")
                 valor = simboloEsq.valor % simboloDir.valor
-            return ts.Simbolo(nome=None, categoria='literal', tipo=tipo, valor=valor)
-        return ts.Simbolo(nome=None, categoria='variavel', tipo=tipo)
+            return ts.Simbolo(nome=None, categoria='literal', tipo=ts.I32, valor=valor)
+        elif simboloDir.categoria == 'literal' and vem.op in ['/', '%'] and simboloDir.valor == 0:
+            raise ValueError("Erro semântico:\nDivisão por zero.")
+        return ts.Simbolo(nome=None, categoria='variavel', tipo=ts.I32)
 
     def visitExpExpUnary(self, veu):
         return veu.exp_unary.accept(self)
@@ -784,9 +802,7 @@ class VisitorSemanticoSecond(VisitorAbstrato):
 
     def visitExpUnaryNeg(self, venu):
         simbolo = venu.exp_unary.accept(self)
-        if simbolo.tipo in ts.UnsignedNumber:
-            simbolo.tipo = ts.SignedNumber[ts.UnsignedNumber.index(simbolo.tipo)]
-        elif simbolo.tipo not in ts.SignedNumber:
+        if simbolo.tipo != ts.I32:
             raise ValueError(f"Erro semântico:\nOperador '-' não pode ser aplicado ao tipo '{simbolo.tipo}'.")
         return simbolo
 
@@ -797,10 +813,7 @@ class VisitorSemanticoSecond(VisitorAbstrato):
         return vepc.call.accept(self)
 
     def visitExpPrimaryNum(self, vepn):
-        tipo = ts.U32
-        if vepn.value <= 2**31 - 1:
-            tipo = ts.I32
-        return ts.Simbolo(nome=None, categoria='literal', tipo=tipo, valor=vepn.value)
+        return ts.Simbolo(nome=None, categoria='literal', tipo=ts.I32, valor=vepn.value)
 
     def visitExpPrimaryId(self, vepi):
         simbolo = self.tabela.buscar(vepi.id)
