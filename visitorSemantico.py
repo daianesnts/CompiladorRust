@@ -858,7 +858,7 @@ class VisitorSemanticoSecond(VisitorAbstrato):
             raise ValueError(f"Erro semântico:\nFunção '{vcfa.id}' espera {len(params)} argumentos, mas recebeu {len(args_tipos)}.")
             
         for i, (arg_tipo, (param_nome, param_tipo)) in enumerate(zip(args_tipos, params)):
-            if arg_tipo and param_tipo and arg_tipo != param_tipo:
+            if arg_tipo and param_tipo and arg_tipo.tipo != param_tipo:
                 raise ValueError(f"Erro semântico:\nArgumento {i+1} da função '{vcfa.id}' esperava tipo '{param_tipo}', mas recebeu '{arg_tipo}'.")
                 
         return simbolo.tipo
@@ -869,10 +869,6 @@ class VisitorSemanticoSecond(VisitorAbstrato):
             raise ValueError(f"Erro semântico:\nIdentificador '{vcf.id}' não foi declarado.")
         if simbolo.categoria != 'funcao':
             raise ValueError(f"Erro semântico:\nIdentificador '{vcf.id}' não é uma função.")
-            
-        params = simbolo.params or []
-        if len(params) > 0:
-            raise ValueError(f"Erro semântico:\nFunção '{vcf.id}' espera {len(params)} argumentos, mas recebeu {len(params)}.")
             
         return simbolo.tipo
 
