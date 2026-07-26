@@ -387,12 +387,20 @@ class VisitorSemanticoSecond(VisitorAbstrato):
 
     # FUNCOES
     def visitFuncDeclSignatureBody(self, vfdsb):
+        local_var = vfdsb.signature.accept(self)
         self.tabela.pushEscopo()
+        if len(local_var) > 0:
+            for var in local_var:
+                self.tabela.inserir(var)
         vfdsb.body.accept(self)
         self.tabela.popEscopo()
 
     def visitSignatureFunc(self, vsf):
-        pass
+        func_simbolo = self.tabela.buscar(vsf.id)
+        local_var = []
+        for param in func_simbolo.params:
+            local_var.append(ts.Simbolo(nome=param[0], categoria='variavel', tipo=param[1]))
+        return local_var
 
     def visitSignatureISigP(self, vsigp):
         pass
