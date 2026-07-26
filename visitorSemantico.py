@@ -387,7 +387,9 @@ class VisitorSemanticoSecond(VisitorAbstrato):
 
     # FUNCOES
     def visitFuncDeclSignatureBody(self, vfdsb):
-        pass
+        self.tabela.pushEscopo()
+        vfdsb.body.accept(self)
+        self.tabela.popEscopo()
 
     def visitSignatureFunc(self, vsf):
         pass
@@ -420,7 +422,8 @@ class VisitorSemanticoSecond(VisitorAbstrato):
         pass
 
     def visitBodyConcrete(self, vbc):
-        pass
+        if vbc.stmts:
+            vbc.stmts.accept(self)
 
     # STRUCT E TRAIT
     def visitStructDeclConcrete(self, vsdc):
@@ -494,10 +497,14 @@ class VisitorSemanticoSecond(VisitorAbstrato):
         self.tabela.popEscopo()
 
     def visitStmWhile(self, vsw):
-        pass
+        vsw.exp.accept(self)
+        self.tabela.pushEscopo()
+        vsw.stmts.accept(self)
+        self.tabela.popEscopo()
 
     def visitStmReturn(self, vsr):
-        pass
+        if vsr.exp:
+            vsr.exp.accept(self)
 
     def visitStmBreak(self, vsb):
         pass
@@ -507,13 +514,30 @@ class VisitorSemanticoSecond(VisitorAbstrato):
 
     # IF/ELSE
     def visitIfNoElse(self, vifne):
-        pass
+        vifne.exp.accept(self)
+        self.tabela.pushEscopo()
+        vifne.stmts.accept(self)
+        self.tabela.popEscopo()
 
     def visitIfElse(self, vife):
-        pass
+        vife.exp.accept(self)
+        
+        self.tabela.pushEscopo()
+        vife.stmtsif.accept(self)
+        self.tabela.popEscopo()
+        
+        self.tabela.pushEscopo()
+        vife.stmtselse.accept(self)
+        self.tabela.popEscopo()
 
     def visitIfElseIfr(self, vifei):
-        pass
+        vifei.exp.accept(self)
+        
+        self.tabela.pushEscopo()
+        vifei.stmtsif.accept(self)
+        self.tabela.popEscopo()
+        
+        vifei.ifr.accept(self)
 
     # DECLARACOES
     def visitDeclLet(self, vdl):
@@ -785,10 +809,10 @@ class VisitorSemanticoSecond(VisitorAbstrato):
         return ts.Simbolo(nome=None, categoria=simbolo.categoria, tipo=simbolo.tipo)
 
     def visitExpPrimaryString(self, veps):
-        pass
+        return 'string'
 
     def visitExpPrimaryBool(self, vepb):
-        pass
+        return 'bool'
 
     def visitExpPrimaryParen(self, vepp):
         return vepp.exp.accept(self)
@@ -806,16 +830,49 @@ class VisitorSemanticoSecond(VisitorAbstrato):
 
     # CHAMADAS DE FUNCAO
     def visitCallFuncArgs(self, vcfa):
-        pass
+        simbolo = self.tabela.buscar(vcfa.id)
+        if not simbolo:
+            raise ValueError(f"Erro semântico:\nIdentificador '{vcfa.id}' não foi declarado.")
+        if simbolo.categoria != 'funcao':
+            raise ValueError(f"Erro semântico:\nIdentificador '{vcfa.id}' não é uma função.")
+        
+        args_tipos = vcfa.args.accept(self)
+        if not isinstance(args_tipos, list):
+            args_tipos = [args_tipos] if args_tipos else []
+            
+        params = simbolo.params or []
+        if len(args_tipos) != len(params):
+            raise ValueError(f"Erro semântico:\nFunção '{vcfa.id}' espera {len(params)} argumentos, mas recebeu {len(args_tipos)}.")
+            
+        for i, (arg_tipo, (param_nome, param_tipo)) in enumerate(zip(args_tipos, params)):
+            if arg_tipo and param_tipo and arg_tipo != param_tipo:
+                raise ValueError(f"Erro semântico:\nArgumento {i+1} da função '{vcfa.id}' esperava tipo '{param_tipo}', mas recebeu '{arg_tipo}'.")
+                
+        return simbolo.tipo
 
     def visitCallFunc(self, vcf):
-        pass
+        simbolo = self.tabela.buscar(vcf.id)
+        if not simbolo:
+            raise ValueError(f"Erro semântico:\nIdentificador '{vcf.id}' não foi declarado.")
+        if simbolo.categoria != 'funcao':
+            raise ValueError(f"Erro semântico:\nIdentificador '{vcf.id}' não é uma função.")
+            
+        params = simbolo.params or []
+        if len(params) > 0:
+            raise ValueError(f"Erro semântico:\nFunção '{vcf.id}' espera {len(params)} argumentos, mas recebeu {len(params)}.")
+            
+        return simbolo.tipo
 
     def visitArgsExpArgs(self, vaea):
-        pass
+        tipo_arg = vaea.exp.accept(self)
+        tipos_restantes = vaea.args.accept(self)
+        if not isinstance(tipos_restantes, list):
+            tipos_restantes = [tipos_restantes] if tipos_restantes else []
+        return [tipo_arg] + tipos_restantes
 
     def visitArgsExp(self, vae):
-        pass
+        tipo_arg = vae.exp.accept(self)
+        return [tipo_arg]
 
     # TIPO
     def visitTypeID(self, vtid):
