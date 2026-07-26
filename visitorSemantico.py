@@ -551,20 +551,40 @@ class VisitorSemanticoSecond(VisitorAbstrato):
     def visitDeclLet(self, vdl):
         if self.tabela.buscarEscopoAtual(vdl.id):
             raise ValueError(f"Erro semântico:\n'{vdl.id}' já declarado neste escopo.")
-        self.tabela.inserir(ts.Simbolo(nome=vdl.id, categoria='variavel'))
+        tipo = vdl.typedecl.accept(self)
+        exp_simbolo = vdl.exp.accept(self)
+        if tipo is None:
+            tipo = exp_simbolo.tipo
+        elif tipo != exp_simbolo.tipo:
+            raise ValueError(f"Erro semântico:\nNão é possível atribuir um valor do tipo '{exp_simbolo.tipo}' a uma variável do tipo '{tipo}'.")
+        self.tabela.inserir(ts.Simbolo(nome=vdl.id, categoria='variavel', tipo=tipo))
 
     def visitDeclMut(self, vdm):
         if self.tabela.buscarEscopoAtual(vdm.id):
             raise ValueError(f"Erro semântico:\n'{vdm.id}' já declarado neste escopo.")
-        self.tabela.inserir(ts.Simbolo(nome=vdm.id, categoria='variavel_mut'))
+        tipo = vdm.typedecl.accept(self)
+        exp_simbolo = vdm.exp.accept(self)
+        if tipo is None:
+                tipo = exp_simbolo.tipo
+        elif tipo != exp_simbolo.tipo:
+            raise ValueError(f"Erro semântico:\nNão é possível atribuir um valor do tipo '{exp_simbolo.tipo}' a uma variável mutável do tipo '{tipo}'.")
+                
+        self.tabela.inserir(ts.Simbolo(nome=vdm.id, categoria='variavel_mut', tipo=tipo))
 
     def visitDeclConst(self, vdc):
         if self.tabela.buscarEscopoAtual(vdc.id):
             raise ValueError(f"Erro semântico:\n'{vdc.id}' já declarado neste escopo.")
-        self.tabela.inserir(ts.Simbolo(nome=vdc.id, categoria='const'))
+        tipo = vdc.type.accept(self)
+        simboloDir = vdc.exp.accept(self)
+        if simboloDir.categoria == 'literal':
+            if tipo != simboloDir.tipo:
+                raise ValueError(f"Erro semântico:\nNão é possível atribuir um valor do tipo '{simboloDir.tipo}' a uma constante do tipo '{tipo}'.")
+        else:
+            raise ValueError(f"Erro semântico:\nAtribuição de valor a constante '{vdc.id}' deve ser conhecida em tempo de compilação.")
+        self.tabela.inserir(ts.Simbolo(nome=vdc.id, categoria='const', tipo=tipo))
 
     def visitTypeDeclConcrete(self, vtdc):
-        pass
+        return vtdc.type.accept(self)
 
     # EXPRESSOES
     def visitExpAssign(self, vea):
