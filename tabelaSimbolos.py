@@ -1,10 +1,21 @@
+I8 = 'i8'
+I16 = 'i16'
+I32 = 'i32'
+U8 = 'u8'
+U16 = 'u16'
+U32 = 'u32'
+BOOL = 'bool'
+SignedNumber = [I8, I16, I32]
+UnsignedNumber = [U8, U16, U32]
+
 class Simbolo:
 
-    def __init__(self, nome, categoria, tipo=None, params=None):
+    def __init__(self, nome, categoria, tipo=None, params=None, valor=None):
         self.nome = nome
         self.categoria = categoria
         self.tipo = tipo
         self.params = params
+        self.valor = valor
 
 
 class TabelaSimbolos:
