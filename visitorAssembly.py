@@ -53,8 +53,13 @@ class VisitorAssembly(VisitorAbstrato):
     def visitTopDeclTraitDecl(self, vtdtd):
         vtdtd.traitdecl.accept(self)
     
-    def visitTopDeclDecl(self, vtdd):
-        vtdd.decl.accept(self)
+    def visitTopDeclDeclStatic(self, vtdds):
+        name = vtdds.declstatic.id
+        vtdds.declstatic.exp.accept(self)
+        self.data.add((name, getAssemblyType()))
+        ast.addVar(name, getAssemblyType())
+        code = self.getList()
+        code.append(f"    sw $v0, {name}($zero)") 
 
     # FUNCOES
     def visitFuncDeclSignatureBody(self, vfdsb):
@@ -104,7 +109,7 @@ class VisitorAssembly(VisitorAbstrato):
 
     def visitSigParamConcrete(self, vspc):
         tipo = vspc.type.accept(self)
-        return [vspc.id, tipo]
+        return [vspc.id, getAssemblyType()]
 
     def visitBodyConcrete(self, vbc):
         vbc.stmts.accept(self)  
@@ -269,6 +274,9 @@ class VisitorAssembly(VisitorAbstrato):
         bind = ast.getBindable(vdm.id)
         code.append(f"    sw $v0, {bind[ast.OFFSET]}($fp)")
         code.append(f"    addi $sp, $sp, -4")
+
+    def visitDeclStatic(self, vds):
+        pass
 
     def visitDeclConst(self, vdc):
         pass

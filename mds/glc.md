@@ -6,7 +6,7 @@ A seguinte gramática será utilizada para desenvolver o analisador sintático d
 
 program  → topdecl | topdecl program
 
-topdecl  → funcdecl | structdecl | traitdecl | decl
+topdecl  → funcdecl | structdecl | traitdecl | declstatic
 ```
 ```
 #FUNÇÕES
@@ -83,6 +83,8 @@ declmut → "let" "mut" ID typedecl "=" exp ";"
 
 declcons → "const" ID ":" TYPE "=" exp ";"
 
+declstatic → "static" ID ":" TYPE "=" exp ";" 
+
 typedecl → ":" TYPE | ε
 ```
 ```
@@ -143,4 +145,9 @@ call → ID "(" args ")" | ID "(" ")"
 
 args → exp "," args | exp
 
+```
+```
+# OBTENÇÃO DE TIPO
+
+type → ID
 ```

@@ -38,12 +38,12 @@ class TopDeclTraitDecl(TopDecl):
     def accept(self, visitor):
         return visitor.visitTopDeclTraitDecl(self)
 
-class TopDeclDecl(TopDecl):
-    def __init__(self, decl):
-        self.decl = decl
+class TopDeclDeclStatic(TopDecl):
+    def __init__(self, declstatic):
+        self.declstatic = declstatic
 
     def accept(self, visitor):
-        return visitor.visitTopDeclDecl(self)
+        return visitor.visitTopDeclDeclStatic(self)
 
 
 #FUNCOES
@@ -385,6 +385,15 @@ class DeclCons(Decl):
 
     def accept(self, visitor):
         return visitor.visitDeclConst(self)
+
+class DeclStatic(Decl):
+    def __init__(self, id, type, exp):
+        self.id = id
+        self.type = type
+        self.exp = exp
+
+    def accept(self, visitor):
+        return visitor.visitDeclStatic(self)
     
 class DeclExp(Decl):
     def __init__(self, id, exp):

@@ -86,6 +86,4 @@ def getScope(bindableName = None):
     for i in reversed(range(len(symbolTable))):
         if (bindableName in symbolTable[i].keys()):
             return symbolTable[i][SCOPE]
-        else:
-            return symbolTable[-1][SCOPE]
     return None

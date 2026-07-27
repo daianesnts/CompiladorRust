@@ -30,8 +30,8 @@ class PrettyPrinter(VisitorAbstrato):
     def visitTopDeclTraitDecl(self, vtdtd):
         vtdtd.traitdecl.accept(self)
     
-    def visitTopDeclDecl(self, vtdd):
-        vtdd.decl.accept(self)
+    def visitTopDeclDeclStatic(self, vtdds):
+        vtdds.declstatic.accept(self)
     
 #FUNÇÕES
     def visitFuncDeclSignatureBody(self, vfdsb):
@@ -198,7 +198,7 @@ class PrettyPrinter(VisitorAbstrato):
     def visitStmReturn(self, vsr):
         print("return ", end="")
         vsr.exp.accept(self)
-        print(";", end="")
+        print(";")
     
     def visitStmBreak(self, vsbr):
         print("break;", end="")
@@ -254,10 +254,17 @@ class PrettyPrinter(VisitorAbstrato):
         print(";")
     
     def visitDeclConst(self, vdc):
-        print(f"const {vdc.id}", end="")
+        print(f"const {vdc.id}: ", end="")
         vdc.type.accept(self)
         print(" = ", end="")
         vdc.exp.accept(self)
+        print(";")
+
+    def visitDeclStatic(self, vds):
+        print(f"static {vds.id}: ", end="")
+        vds.type.accept(self)
+        print(" = ", end="")
+        vds.exp.accept(self)
         print(";")
 
     def visitTypeDeclConcrete(self, vtdc):

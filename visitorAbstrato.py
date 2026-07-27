@@ -27,7 +27,7 @@ class VisitorAbstrato(ABC):
         pass
 
     @abstractmethod
-    def visitTopDeclDecl(self, vtdd):
+    def visitTopDeclDeclStatic(self, vtdds):
         pass
 
 #FUNÇÕES
@@ -208,6 +208,10 @@ class VisitorAbstrato(ABC):
 
     @abstractmethod
     def visitDeclConst(self, vdc):
+        pass
+
+    @abstractmethod
+    def visitDeclStatic(self, vds):
         pass
 
     @abstractmethod

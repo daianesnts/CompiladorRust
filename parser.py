@@ -23,10 +23,9 @@ def p_topdecl_trait(p):
     '''topdecl : traitdecl'''
     p[0] = TopDeclTraitDecl(p[1])
 
-def p_topdecl_decl(p):
-    '''topdecl : decl'''
-    p[0] = TopDeclTraitDecl(p[1])
-
+def p_topdecl_declstatic(p):
+    '''topdecl : declstatic'''
+    p[0] = TopDeclDeclStatic(p[1])
 
 #FUNÇÕES
 def p_funcdecl(p):
@@ -241,6 +240,10 @@ def p_decl_mut(p):
 def p_decl_const(p):
     '''decl : CONST ID COLON type ATTRIB exp SCOLON'''
     p[0] = DeclCons(p[2], p[4], p[6])
+
+def p_decl_static(p):
+    '''declstatic : STATIC ID COLON type ATTRIB exp SCOLON'''
+    p[0] = DeclStatic(p[2], p[4], p[6])
 
 """
 def p_decl_exp(p):
@@ -474,7 +477,7 @@ def create_parser():
 
 def main():
     if len(sys.argv) < 2:
-        print("Use: python lexer.py <arquivo_rust.rs>")
+        print("Use: python parser.py <arquivo_rust.rs>")
         exit(1)
     
     with open(sys.argv[1], 'r') as f:
