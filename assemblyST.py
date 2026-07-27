@@ -11,6 +11,7 @@ SCOPE_GLOBAL = 'global'
 SCOPE_MAIN = 'main'
 OFFSET = 'offset'
 SP = 'sp'
+STR = '.asciiz'
 DEBUG = 0
 
 

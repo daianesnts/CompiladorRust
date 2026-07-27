@@ -2,6 +2,8 @@ from visitorAbstrato import VisitorAbstrato
 import assemblyST as ast
 
 def getAssemblyType(type = None):
+    if type == ast.STR:
+        return ".asciiz"
     return ".word"
 
 class VisitorAssembly(VisitorAbstrato):
@@ -14,6 +16,7 @@ class VisitorAssembly(VisitorAbstrato):
         self.text.append("    move $fp, $sp")
         self.data = set()
         self.rotulos = {}
+        self.println = False
 
     def visit(self, no):
         return no.accept(self)
@@ -494,10 +497,12 @@ class VisitorAssembly(VisitorAbstrato):
         code.append(f"    addi $sp, $sp, 8")
         ast.addSP(oldSP - ast.getSP())
         ast.addSP(8)
+        return ('', ast.INT)
 
     def visitExpPrimaryNum(self, vepn):
         code = self.getList()
         code.append(f"    li $v0, {vepn.value}")
+        return ('', ast.INT)
 
     def visitExpPrimaryId(self, vepi):
         code = self.getList()
@@ -507,9 +512,13 @@ class VisitorAssembly(VisitorAbstrato):
                 code.append(f"    lw $v0, {vepi.id}($zero)")
             else:
                 code.append(f"    lw $v0, {idName[ast.OFFSET]}($fp)")
+        return ('', ast.INT)
 
     def visitExpPrimaryString(self, veps):
-        pass
+        rotulo_str = self.novo_rotulo("STR")
+        str_final = veps.value
+        self.data.add((rotulo_str, getAssemblyType(ast.STR), str_final))
+        return (rotulo_str, ast.STR)
 
     def visitExpPrimaryBool(self, vepb):
         pass
@@ -526,8 +535,23 @@ class VisitorAssembly(VisitorAbstrato):
     # CHAMADAS DE FUNCAO
     def visitCallFuncArgs(self, vcfa):
         code = self.getList()
-        vcfa.args.accept(self)
-        code.append(f"    jal {vcfa.id}")
+        if vcfa.id == "println":
+            self.println = True
+            str_addr, tipo = vcfa.args.accept(self)
+            if tipo == ast.STR:
+                code.append(f"    li $v0, 4")
+                code.append(f"    la $a0, {str_addr}")
+            else:
+                code.append(f"    move $a0, $v0")
+                code.append(f"    li $v0, 1")
+            code.append(f"    syscall")
+            code.append(f"    li $v0, 11")
+            code.append(f"    li $a0, 10")
+            code.append("    syscall")
+            self.println = False
+        else:
+            vcfa.args.accept(self)
+            code.append(f"    jal {vcfa.id}")
 
     def visitCallFunc(self, vcf):
         code = self.getList()
@@ -542,9 +566,12 @@ class VisitorAssembly(VisitorAbstrato):
 
     def visitArgsExp(self, vae):
         code = self.getList()
-        vae.exp.accept(self)
-        ast.addSP(-4)
-        code.append(f"    sw $v0, {ast.getSP()}($fp)")
+        if self.println:
+            return vae.exp.accept(self)
+        else:
+            vae.exp.accept(self)
+            ast.addSP(-4)
+            code.append(f"    sw $v0, {ast.getSP()}($fp)")
 
     # TIPO
     def visitTypeID(self, vtid):
@@ -554,7 +581,10 @@ class VisitorAssembly(VisitorAbstrato):
         finalcode = []
         if self.data:
             for globalVar in self.data:
-                finalcode.insert(0, f"    {globalVar[0]}: {globalVar[1]} 0")
+                if globalVar[1] == ".word":
+                    finalcode.insert(0, f"    {globalVar[0]}: {globalVar[1]} 0")
+                else:
+                    finalcode.insert(0, f'    {globalVar[0]}: {globalVar[1]} "{globalVar[2]}"')
             finalcode.insert(0,".data")
         finalcode = finalcode + self.text
         finalcode.append("    j end")

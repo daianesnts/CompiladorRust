@@ -5,6 +5,7 @@ U8 = 'u8'
 U16 = 'u16'
 U32 = 'u32'
 BOOL = 'bool'
+STR = 'str'
 SignedNumber = [I8, I16, I32]
 UnsignedNumber = [U8, U16, U32]
 

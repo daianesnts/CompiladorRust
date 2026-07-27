@@ -25,6 +25,14 @@ class VisitorSemanticoFirst(VisitorAbstrato):
 
     def __init__(self):
         self.tabela = ts.TabelaSimbolos()
+        self.tabela.inserir(
+            ts.Simbolo(
+                nome='println',
+                categoria='funcao',
+                tipo=None,
+                params=[("printable", [ts.I32, ts.STR])]
+            )
+        )
 
     def visit(self, no):
         return no.accept(self)
@@ -868,7 +876,7 @@ class VisitorSemanticoSecond(VisitorAbstrato):
         return ts.Simbolo(nome=None, categoria=simbolo.categoria, tipo=simbolo.tipo)
 
     def visitExpPrimaryString(self, veps):
-        return 'string'
+        return ts.Simbolo(nome=None, categoria='literal', tipo=ts.STR, valor=veps.value)
 
     def visitExpPrimaryBool(self, vepb):
         return 'bool'
@@ -902,10 +910,13 @@ class VisitorSemanticoSecond(VisitorAbstrato):
         params = simbolo.params or []
         if len(args_tipos) != len(params):
             raise ValueError(f"Erro semântico:\nFunção '{vcfa.id}' espera {len(params)} argumentos, mas recebeu {len(args_tipos)}.")
-            
-        for i, (arg_tipo, (param_nome, param_tipo)) in enumerate(zip(args_tipos, params)):
-            if arg_tipo and param_tipo and arg_tipo.tipo != param_tipo:
-                raise ValueError(f"Erro semântico:\nArgumento {i+1} da função '{vcfa.id}' esperava tipo '{param_tipo}', mas recebeu '{arg_tipo}'.")
+
+        if simbolo.nome == 'println' and args_tipos[0].tipo in params[0][1]:
+            pass
+        else:
+            for i, (arg_tipo, (param_nome, param_tipo)) in enumerate(zip(args_tipos, params)):
+                if arg_tipo and param_tipo and arg_tipo.tipo != param_tipo:
+                    raise ValueError(f"Erro semântico:\nArgumento {i+1} da função '{vcfa.id}' esperava tipo '{param_tipo}', mas recebeu '{arg_tipo}'.")
                 
         return simbolo
 
