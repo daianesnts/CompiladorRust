@@ -31,6 +31,22 @@ def endScope():
     symbolTable = symbolTable[0:-1]
     printTable()
 
+def beginInnerScope():
+    global symbolTable
+    spAntigo = symbolTable[-1][SP]
+    nameScopeAntigo = symbolTable[-1][SCOPE]
+    symbolTable.append({})
+    symbolTable[-1][SCOPE] = nameScopeAntigo
+    symbolTable[-1][SP] = spAntigo
+    printTable()
+
+def endInnerScope():
+    endScope()
+
+def getCurrentST():
+    global symbolTable
+    return symbolTable[-1]
+
 def addVar(name, type):
     global symbolTable
     if not name in symbolTable[-1]:
@@ -57,6 +73,12 @@ def getBindable(bindableName):
     for i in reversed(range(len(symbolTable))):
         if (bindableName in symbolTable[i].keys()):
             return symbolTable[i][bindableName]
+    return None
+
+def getBindableCurrentScope(bindableName):
+    global symbolTable
+    if (bindableName in symbolTable[-1].keys()):
+        return symbolTable[-1][bindableName]
     return None
 
 def getScope(bindableName = None):

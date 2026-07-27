@@ -28,6 +28,14 @@ class VisitorAssembly(VisitorAbstrato):
     def getList(self):
         return self.text if ast.getScope() in [ast.SCOPE_GLOBAL, ast.SCOPE_MAIN] else self.funcs
 
+    def sairEscopoInterno(self):
+        tabelaAntiga = ast.getCurrentST()
+        ast.endInnerScope()
+        tabelaAtual = ast.getCurrentST()
+        diffSp = tabelaAtual[ast.SP] - tabelaAntiga[ast.SP]
+        code = self.getList()
+        code.append(f"    addi $sp, $sp, {diffSp}")
+
     #PROGRAMA
     def visitProgramTopDecl(self, vptd):
         vptd.topdecl.accept(self)
@@ -184,7 +192,9 @@ class VisitorAssembly(VisitorAbstrato):
         code.append(f"{rotulo_inicial}:")
         vsw.exp.accept(self)
         code.append(f"    beq $v0, $zero, {rotulo_final}")
+        ast.beginInnerScope()
         vsw.stmts.accept(self)
+        self.sairEscopoInterno()
         code.append(f"    j {rotulo_inicial}")
         code.append(f"{rotulo_final}:")
 
@@ -206,7 +216,9 @@ class VisitorAssembly(VisitorAbstrato):
         code = self.getList()
         vifne.exp.accept(self)
         code.append(f"    beq $v0, $zero, {rotulo_final}")
+        ast.beginInnerScope()
         vifne.stmts.accept(self)
+        self.sairEscopoInterno()
         code.append(f"{rotulo_final}:")
 
     def visitIfElse(self, vife):
@@ -215,10 +227,14 @@ class VisitorAssembly(VisitorAbstrato):
         code = self.getList()
         vife.exp.accept(self)
         code.append(f"    beq $v0, $zero, {rotulo_else}")
+        ast.beginInnerScope()
         vife.stmts.accept(self)
+        self.sairEscopoInterno()
         code.append(f"    j {rotulo_final}")
         code.append(f"{rotulo_else}:")
+        ast.beginInnerScope()
         vife.else_stmts.accept(self)
+        self.sairEscopoInterno()
         code.append(f"{rotulo_final}:")
 
     def visitIfElseIfr(self, vifei):
@@ -227,10 +243,14 @@ class VisitorAssembly(VisitorAbstrato):
         code = self.getList()
         vifei.exp.accept(self)
         code.append(f"    beq $v0, $zero, {rotulo_else}")
+        ast.beginInnerScope()
         vifei.stmts.accept(self)
+        self.sairEscopoInterno()
         code.append(f"    j {rotulo_final}")
         code.append(f"{rotulo_else}:")
+        ast.beginInnerScope()
         vifei.ifr.accept(self)
+        self.sairEscopoInterno()
         code.append(f"{rotulo_final}:")
 
     # DECLARACOES
