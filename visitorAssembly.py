@@ -521,7 +521,10 @@ class VisitorAssembly(VisitorAbstrato):
         return (rotulo_str, ast.STR)
 
     def visitExpPrimaryBool(self, vepb):
-        pass
+        code = self.getList()
+        booleano = 1 if vepb.value else 0
+        code.append(f"    li $v0, {booleano}")
+        return ('', ast.INT)
 
     def visitExpPrimaryParen(self, vepp):
         pass

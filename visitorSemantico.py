@@ -879,7 +879,7 @@ class VisitorSemanticoSecond(VisitorAbstrato):
         return ts.Simbolo(nome=None, categoria='literal', tipo=ts.STR, valor=veps.value)
 
     def visitExpPrimaryBool(self, vepb):
-        return 'bool'
+        return ts.Simbolo(nome=None, categoria='literal', tipo=ts.BOOL, valor=vepb.value)
 
     def visitExpPrimaryParen(self, vepp):
         return vepp.exp.accept(self)
