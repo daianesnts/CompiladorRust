@@ -269,7 +269,8 @@ class PrettyPrinter(VisitorAbstrato):
 
     def visitTypeDeclConcrete(self, vtdc):
         if vtdc.type is not None:
-            print(f": {vtdc.type}", end="")
+            print(f": ", end="")
+            vtdc.type.accept(self)
 
 #EXPRESSOES
     def visitExpAssign(self, vea):
