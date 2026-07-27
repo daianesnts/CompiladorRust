@@ -584,7 +584,8 @@ class VisitorSemanticoSecond(VisitorAbstrato):
         self.tabela.inserir(ts.Simbolo(nome=vdc.id, categoria='const', tipo=tipo))
 
     def visitTypeDeclConcrete(self, vtdc):
-        return vtdc.type.accept(self)
+        if vtdc.type:
+            return vtdc.type.accept(self)
 
     # EXPRESSOES
     def visitExpAssign(self, vea):
@@ -889,7 +890,7 @@ class VisitorSemanticoSecond(VisitorAbstrato):
             if arg_tipo and param_tipo and arg_tipo.tipo != param_tipo:
                 raise ValueError(f"Erro semântico:\nArgumento {i+1} da função '{vcfa.id}' esperava tipo '{param_tipo}', mas recebeu '{arg_tipo}'.")
                 
-        return simbolo.tipo
+        return simbolo
 
     def visitCallFunc(self, vcf):
         simbolo = self.tabela.buscar(vcf.id)
@@ -898,7 +899,7 @@ class VisitorSemanticoSecond(VisitorAbstrato):
         if simbolo.categoria != 'funcao':
             raise ValueError(f"Erro semântico:\nIdentificador '{vcf.id}' não é uma função.")
             
-        return simbolo.tipo
+        return simbolo
 
     def visitArgsExpArgs(self, vaea):
         tipo_arg = vaea.exp.accept(self)
