@@ -298,16 +298,53 @@ class VisitorAssembly(VisitorAbstrato):
         code.append(f"    sw $v0, {bind[ast.OFFSET]}($fp)")
 
     def visitExpAtribuiSoma(self, vas):
-        pass
+        code = self.getList()
+        vas.exp.accept(self)
+        bind = ast.getBindable(vas.id)
+        code.append("    addi $sp, $sp, -4")
+        code.append("    sw $v0, 0($sp)")
+        code.append(f"    lw $v0, {bind[ast.OFFSET]}($fp)")
+        code.append("    lw $t0, 0($sp)")
+        code.append("    addi $sp, $sp, 4")
+        code.append("    add $v0, $v0, $t0")
+        code.append(f"    sw $v0, {bind[ast.OFFSET]}($fp)")
 
     def visitExpAtribuiSubtracao(self, vas):
-        pass
+        code = self.getList()
+        vas.exp.accept(self)
+        bind = ast.getBindable(vas.id)
+        code.append("    addi $sp, $sp, -4")
+        code.append("    sw $v0, 0($sp)")
+        code.append(f"    lw $v0, {bind[ast.OFFSET]}($fp)")
+        code.append("    lw $t0, 0($sp)")
+        code.append("    addi $sp, $sp, 4")
+        code.append("    sub $v0, $v0, $t0")
+        code.append(f"    sw $v0, {bind[ast.OFFSET]}($fp)")
 
     def visitExpAtribuiMultiplicacao(self, vam):
-        pass
+        code = self.getList()
+        vam.exp.accept(self)
+        bind = ast.getBindable(vam.id)
+        code.append("    addi $sp, $sp, -4")
+        code.append("    sw $v0, 0($sp)")
+        code.append(f"    lw $v0, {bind[ast.OFFSET]}($fp)")
+        code.append("    lw $t0, 0($sp)")
+        code.append("    addi $sp, $sp, 4")
+        code.append("    mul $v0, $v0, $t0")
+        code.append(f"    sw $v0, {bind[ast.OFFSET]}($fp)")
 
     def visitExpAtribuiDivisao(self, vad):
-        pass
+        code = self.getList()
+        vad.exp.accept(self)
+        bind = ast.getBindable(vad.id)
+        code.append("    addi $sp, $sp, -4")
+        code.append("    sw $v0, 0($sp)")
+        code.append(f"    lw $v0, {bind[ast.OFFSET]}($fp)")
+        code.append("    lw $t0, 0($sp)")
+        code.append("    addi $sp, $sp, 4")
+        code.append("    div $v0, $t0")
+        code.append("    mflo $v0")
+        code.append(f"    sw $v0, {bind[ast.OFFSET]}($fp)")
 
     def visitExpExpOU(self, veu):
         return veu.exp_or.accept(self)
