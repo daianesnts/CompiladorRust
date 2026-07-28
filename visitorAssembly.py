@@ -16,7 +16,7 @@ class VisitorAssembly(VisitorAbstrato):
         self.text.append("    move $fp, $sp")
         self.data = set()
         self.rotulos = {}
-        self.println = False
+        self.print = False
 
     def visit(self, no):
         return no.accept(self)
@@ -539,7 +539,7 @@ class VisitorAssembly(VisitorAbstrato):
     def visitCallFuncArgs(self, vcfa):
         code = self.getList()
         if vcfa.id == "println":
-            self.println = True
+            self.print = True
             str_addr, tipo = vcfa.args.accept(self)
             if tipo == ast.STR:
                 code.append(f"    li $v0, 4")
@@ -551,7 +551,18 @@ class VisitorAssembly(VisitorAbstrato):
             code.append(f"    li $v0, 11")
             code.append(f"    li $a0, 10")
             code.append("    syscall")
-            self.println = False
+            self.print = False
+        elif vcfa.id == "print":
+            self.print = True
+            str_addr, tipo = vcfa.args.accept(self)
+            if tipo == ast.STR:
+                code.append(f"    li $v0, 4")
+                code.append(f"    la $a0, {str_addr}")
+            else:
+                code.append(f"    move $a0, $v0")
+                code.append(f"    li $v0, 1")
+            code.append(f"    syscall")
+            self.print = False
         else:
             vcfa.args.accept(self)
             code.append(f"    jal {vcfa.id}")
@@ -569,7 +580,7 @@ class VisitorAssembly(VisitorAbstrato):
 
     def visitArgsExp(self, vae):
         code = self.getList()
-        if self.println:
+        if self.print:
             return vae.exp.accept(self)
         else:
             vae.exp.accept(self)

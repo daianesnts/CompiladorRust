@@ -33,6 +33,14 @@ class VisitorSemanticoFirst(VisitorAbstrato):
                 params=[("printable", [ts.I32, ts.STR])]
             )
         )
+        self.tabela.inserir(
+                    ts.Simbolo(
+                        nome='print',
+                        categoria='funcao',
+                        tipo=None,
+                        params=[("printable", [ts.I32, ts.STR])]
+                    )
+                )
 
     def visit(self, no):
         return no.accept(self)
@@ -911,7 +919,7 @@ class VisitorSemanticoSecond(VisitorAbstrato):
         if len(args_tipos) != len(params):
             raise ValueError(f"Erro semântico:\nFunção '{vcfa.id}' espera {len(params)} argumentos, mas recebeu {len(args_tipos)}.")
 
-        if simbolo.nome == 'println' and args_tipos[0].tipo in params[0][1]:
+        if simbolo.nome in ['println', 'print'] and args_tipos[0].tipo in params[0][1]:
             pass
         else:
             for i, (arg_tipo, (param_nome, param_tipo)) in enumerate(zip(args_tipos, params)):
