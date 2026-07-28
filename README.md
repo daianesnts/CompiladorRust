@@ -1,8 +1,8 @@
-# 🦀 Projeto de Compiladores em Rust
+# 🦀 Projeto de Compiladores para a Linguagem Rust
 
 <p align="left">
-  Projeto sendo desenvolvido para a disciplina de <b>Linguagens Formais e Tradutores (LFT)</b>.
-  O objetivo é aplicar conceitos de análise de linguagens e construção de compiladores utilizando a linguagem Rust.
+  Projeto desenvolvido para a disciplina de <b>Linguagens Formais e Tradutores (LFT)</b>.
+  O objetivo foi aplicar conceitos de análise de linguagens e construção de compiladores.
 </p>
 
 <hr>
@@ -27,13 +27,14 @@
 
 <hr>
 
-## 📋 Passos a seguir
+## 📋 Passos seguidos
 
-Abaixo está o cronograma de atividades:
+Abaixo está o cronograma de atividades usado:
 
-1. **Atividade 1:** Elaboração da Documentação Léxica.
-2. **Atividade 2:** Elaboração da Documentação Sintática.
-3. **Atividade 3:** Elaboração da Documentação Sintática e Exemplos de Código.
-4. **Atividade 4:** Elaboração da Gramática Livre de Contexto e implementação no PLY.
-5. **Atividade 5:** Elaboração da Sintaxe Abstrata e Visitor Pretty Printer.
-6. **Atividade 6:** Análise Semântica.
+1. **Atividade 1:** Elaboração da Análise Léxica.
+2. **Atividade 2:** Elaboração da Análise Sintática.
+3. **Atividade 4:** Elaboração da Gramática Livre de Contexto e implementação no PLY.
+4. **Atividade 5:** Elaboração da Sintaxe Abstrata.
+5. **Atividade 6:** Elaboração do Visitor Pretty Printer.
+6. **Atividade 6:** Elaboração da Análise Semântica.
+7. **Atividade 7:** Geração de Assembly.
