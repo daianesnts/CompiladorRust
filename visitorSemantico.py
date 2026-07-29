@@ -1,6 +1,7 @@
 from visitorAbstrato import VisitorAbstrato
 import tabelaSimbolos as ts
 
+"""
 def coercao(tipo1, tipo2):
     if tipo1 == tipo2 and tipo1 in ts.SignedNumber + ts.UnsignedNumber:
         return tipo1
@@ -20,6 +21,7 @@ def atribuicaoValida(simboloEsq, simboloDir):
     if simboloEsq.tipo in ts.UnsignedNumber and simboloDir.tipo in ts.UnsignedNumber:
         return ts.UnsignedNumber.index(simboloDir.tipo) <= ts.UnsignedNumber.index(simboloEsq.tipo)
     return False
+"""
 
 class VisitorSemanticoFirst(VisitorAbstrato):
 
